@@ -1,0 +1,60 @@
+FIRE RESEARCHERS
+================
+
+
+Francesca Di Giuseppe
+---------------------
+ECMWF (European Centre for Medium-Range Weather Forecasts), Reading, UK
+Project manager, Fire Danger Forecasting service
+
+Fire and drought prediction. Built much of ECMWF's fire danger modelling
+infrastructure and runs the operational fire forecasts for the EU's Copernicus
+Emergency Management Service (CEMS). Lead author on a Nature Communications
+paper introducing a machine-learning approach that forecasts fire activity
+itself rather than only fire danger.
+
+LinkedIn: https://www.linkedin.com/in/francesca-digiuseppe/
+ECMWF:    https://www.ecmwf.int/en/about/who-we-are/staff-profiles/francesca-di-giuseppe
+
+Not an author on anything currently in this library.
+
+
+Janice L. Coen
+--------------
+NSF NCAR (National Center for Atmospheric Research), Boulder, CO
+Project Scientist
+
+Wildland fire behavior and its coupling to weather. Co-developer of CAWFE, the
+Coupled Atmosphere-Wildland Fire Environment model, where predicted winds drive
+fire growth and the fire's own heat release feeds back into the atmosphere.
+Also analyses infrared imagery of wildfires and prescribed burns directly --
+the closest overlap with EmberWorks' sensing work of the three.
+
+LinkedIn: https://www.linkedin.com/in/janice-coen-8269b572/
+NCAR:     https://staff.ucar.edu/users/janicec
+
+Already in this library as a co-author:
+  fire-spread-modeling/Data Assimilation.pdf
+      Mandel, Beezley, Coen, Kim (2009)
+  thermography-wildfire/Boroujeni-2024-AI-Enabled-UAS-Wildfire-Survey.pdf
+      Boroujeni, Razi, Khoshdel et al. (2024)
+  Also cited in fire-spread-modeling/DL-physics-based.pdf
+
+
+Faraz Hedayati
+--------------
+IBHS (Insurance Institute for Business & Home Safety)
+Lead Research Engineer
+
+Vulnerability of structures to fire in the wildland-urban interface. Work on
+firebrand (ember) generation from wildland and structural fuels, how embers
+ignite building components such as decks, siding and windows, and wind-driven
+building-to-building spread and safe separation distances. Interests include
+heat transfer models feeding physics-based risk modelling, post-fire field
+investigation, and machine learning and vision for community wildfire risk.
+PhD in Mechanical Engineering, UNC Charlotte.
+
+LinkedIn: https://www.linkedin.com/in/farazhedayati/
+IBHS:     https://ibhs.org/team/faraz-hedayati/
+
+Not an author on anything currently in this library.

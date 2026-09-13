@@ -12,6 +12,3 @@
 
 Also [`wildfire-companies.md`](wildfire-companies.md), a survey of companies working
 in wildfire geospatial and remote sensing.
-
-Papers in the two thermography folders are named `Author-Year-Short-Title.pdf`.
-The other folders are named by method, which is how those works are usually cited.

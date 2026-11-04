@@ -22,3 +22,20 @@ Dataset page: [RDS-2016-0007](https://www.fs.usda.gov/rds/archive/catalog/RDS-20
 | `RDS-2016-0007_Data_1_of_2.zip` | 882 MB | [Download](https://www.fs.usda.gov/rds/archive/products/RDS-2016-0007/RDS-2016-0007_Data_1_of_2.zip) |
 | `RDS-2016-0007_Data_2_of_2.zip` | 723 MB | [Download](https://www.fs.usda.gov/rds/archive/products/RDS-2016-0007/RDS-2016-0007_Data_2_of_2.zip) |
 | `RDS-2016-0007_Supplements.zip` | 653 KB | [Download](https://www.fs.usda.gov/rds/archive/products/RDS-2016-0007/RDS-2016-0007_Supplements.zip) |
+
+## RxCADRE burn block outlines, 2008–2012
+
+Dataset page: [RDS-2014-0031](https://www.fs.usda.gov/rds/archive/catalog/RDS-2014-0031). Save to `data/rxcadre/burn-blocks/`.
+
+| File | Size | Link |
+|---|---|---|
+| `RDS-2014-0031.zip` | 685 KB | [Download](https://www.fs.usda.gov/rds/archive/products/RDS-2014-0031/RDS-2014-0031.zip) |
+
+## NAIP aerial imagery
+
+Dataset page: [NAIP on Planetary Computer](https://planetarycomputer.microsoft.com/dataset/naip). Search it by year and location.
+
+| Area | Flown | Pixel size | Save to |
+|---|---|---|---|
+| RxCADRE burn blocks `608A`, `703C` | September 2010 | 1 m | `data/rxcadre/basemap/` |
+| RxCADRE burn blocks `L1G`, `L2F`, `L2G` | October 2013 | 1 m | `data/rxcadre/basemap/` |

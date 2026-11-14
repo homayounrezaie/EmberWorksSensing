@@ -1,0 +1,1877 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --surface-2: #f3f2ee; --ink: #0b0b0b; --ink-2: #52514e; --muted: #6f6d68;
+  --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,0.10);
+  --phys: #eb6834; --disc: #1baf7a; --cal: #2a78d6; --base: #898781;
+  --teal-soft: #e4f4ed; --teal-ink: #0b5e40; --warn-bg: #fff4dc; --warn-ink: #7a4b00;
+  --map-phys: #ff7a3d; --map-disc: #2fe0a6; --map-cal: #6aa9ff; --map-base: #c9c9c9; --map-real: #ffffff;
+  --panel-out: #ecebe6; --panel-fuel: #dad8d0; --panel-old: #8f8d86; --panel-new: #0b0b0b;
+  --chrome: #ececea; --chrome-2: #f7f7f5; --chrome-press: #dcdbd6; --chrome-line: #c4c3be; --chrome-ink: #1f1f1d; --chrome-muted: #6b6a65;
+  --map-bg: #ffffff; --ov-bg: rgba(255,255,255,0.96); --ov-ink: #1d1d1b; --ov-muted: #6f6d68; --ov-line: rgba(0,0,0,0.14); --ov-hover: rgba(0,0,0,0.05);
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #222220; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #9a988f;
+    --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
+    --phys: #d95926; --disc: #199e70; --cal: #3987e5; --base: #898781;
+    --teal-soft: #10302a; --teal-ink: #8fe6c4; --warn-bg: #3a2b0c; --warn-ink: #ffd27a;
+    --panel-out: #141413; --panel-fuel: #2a2a28; --panel-old: #5d5c57; --panel-new: #f0efec;
+    --chrome: #2b2b2a; --chrome-2: #323231; --chrome-press: #3f3f3c; --chrome-line: #4a4a46; --chrome-ink: #e8e7e3; --chrome-muted: #a5a39b;
+  --map-bg: #2b2b29; --ov-bg: rgba(34,34,32,0.96); --ov-ink: #f0efec; --ov-muted: #a8a69e; --ov-line: rgba(255,255,255,0.14); --ov-hover: rgba(255,255,255,0.06);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #222220; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #9a988f;
+  --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
+  --phys: #d95926; --disc: #199e70; --cal: #3987e5; --base: #898781;
+  --teal-soft: #10302a; --teal-ink: #8fe6c4; --warn-bg: #3a2b0c; --warn-ink: #ffd27a;
+  --panel-out: #141413; --panel-fuel: #2a2a28; --panel-old: #5d5c57; --panel-new: #f0efec;
+  --chrome: #2b2b2a; --chrome-2: #323231; --chrome-press: #3f3f3c; --chrome-line: #4a4a46; --chrome-ink: #e8e7e3; --chrome-muted: #a5a39b;
+  --map-bg: #2b2b29; --ov-bg: rgba(34,34,32,0.96); --ov-ink: #f0efec; --ov-muted: #a8a69e; --ov-line: rgba(255,255,255,0.14); --ov-hover: rgba(255,255,255,0.06);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--page); color: var(--ink); font: 14px/1.5 var(--sans); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1440px; margin: 0 auto; padding: 0 16px 40px; }
+.topbar { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); margin-bottom: 18px; flex-wrap: wrap; }
+.brand { font-weight: 700; font-size: 14px; letter-spacing: -0.01em; margin-right: auto; display: inline-flex; align-items: center; gap: 8px; }
+.brand i { width: 10px; height: 10px; border-radius: 3px; background: linear-gradient(135deg, #f8c64a, #e8572b 55%, #7a1d4f); display: inline-block; }
+.cases { display: inline-flex; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; background: var(--surface); }
+.cases a { padding: 6px 12px; font-size: 13px; color: var(--ink-2); text-decoration: none; white-space: nowrap; }
+.cases a + a { border-left: 1px solid var(--border); }
+.cases a:hover { background: var(--surface-2); color: var(--ink); }
+.cases a[aria-current="page"] { background: var(--ink); color: var(--surface); font-weight: 600; }
+.hero { margin-bottom: 16px; }
+h1 { font-size: 24px; line-height: 1.25; margin: 0 0 6px; font-weight: 680; letter-spacing: -0.015em; }
+h2 { font-size: 15px; margin: 0; font-weight: 650; }
+h3 { font-size: 13px; margin: 0 0 8px; font-weight: 600; color: var(--ink-2); text-transform: uppercase; letter-spacing: 0.04em; }
+.sub { color: var(--ink-2); margin: 0; max-width: 980px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; min-width: 0; }
+.cardhead { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.spread { justify-content: space-between; }
+.pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 2px 10px; font-size: 12px; font-weight: 600;
+  background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--border); white-space: nowrap; }
+.pill.teal { background: var(--teal-soft); color: var(--teal-ink); border-color: transparent; }
+.pill.test { background: var(--ink); color: var(--surface); border-color: transparent; }
+.pill .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+button, .btn { font: inherit; font-size: 13px; color: var(--ink); background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 7px; padding: 5px 10px; cursor: pointer; }
+button:hover { border-color: var(--axis); }
+button:focus-visible, input:focus-visible, label.chip:focus-within { outline: 2px solid var(--cal); outline-offset: 2px; }
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+.mono { font-family: var(--mono); }
+/* --- map --- */
+/* ---- map window (desktop GIS look) ---- */
+.gis { border: 1px solid var(--chrome-line); border-radius: 3px; background: var(--chrome); color: var(--chrome-ink); font: 12px/1.35 var(--sans);
+  overflow: hidden; margin-bottom: 18px; }
+.gis-toolbar { display: flex; align-items: center; gap: 2px; padding: 3px 6px; border-bottom: 1px solid var(--chrome-line); background: var(--chrome); }
+.tb { width: 28px; height: 26px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 2px;
+  background: transparent; color: var(--chrome-ink); padding: 0; cursor: pointer; flex: none; }
+.tb svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.tb svg .fill { fill: currentColor; stroke: none; }
+.tb:hover { border-color: var(--chrome-line); background: var(--chrome-2); }
+.tb:active, .tb.on { border-color: var(--chrome-line); background: var(--chrome-press); }
+.tb:focus-visible { outline: 2px solid var(--cal); outline-offset: -2px; }
+.tb.tb-txt { width: auto; padding: 0 7px; gap: 5px; font: 600 11.5px var(--sans); }
+.tb-ex { display: inline-flex; align-items: center; gap: 6px; margin-left: 8px; font-size: 11.5px; color: var(--chrome-ink); white-space: nowrap; }
+.tb-ex[hidden] { display: none; }
+.tb-ex input { width: 110px; accent-color: #2f6fb5; }
+.map3d { position: relative; background: var(--map-bg); }
+.map3d canvas { display: block; cursor: grab; }
+.map3d .msg3d { position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%); font-size: 12px; color: var(--chrome-muted); }
+.tb-sep { width: 1px; height: 18px; background: var(--chrome-line); margin: 0 5px; }
+.gis-body { display: flex; border-bottom: 1px solid var(--chrome-line); }
+.layers { width: 252px; flex: none; display: flex; flex-direction: column; background: var(--chrome-2); border-right: 1px solid var(--chrome-line); min-height: 0; }
+.layers.collapsed { display: none; }
+.pane-title { padding: 4px 8px; font-weight: 600; font-size: 11.5px; background: var(--chrome); border-bottom: 1px solid var(--chrome-line); flex: none; }
+.lyr-body { overflow-y: auto; padding: 3px 0 8px; flex: 1; min-height: 0; overscroll-behavior: contain; }
+.lyr-gh { display: flex; align-items: center; gap: 4px; padding: 3px 6px; font-weight: 600; cursor: pointer; user-select: none; }
+.lyr-gh:hover { background: var(--chrome-press); }
+.lyr-gh .caret { width: 12px; text-align: center; color: var(--chrome-muted); font-size: 10px; transition: transform .1s; }
+.lyr-group.closed .lyr-gh .caret { transform: rotate(-90deg); }
+.lyr-group.closed .lyr-items { display: none; }
+.lyr-row { display: flex; align-items: center; gap: 6px; padding: 2px 6px 2px 22px; cursor: pointer; line-height: 1.3; user-select: none; }
+.lyr-row:hover { background: var(--chrome-press); }
+.lyr-row input { margin: 0; flex: none; cursor: pointer; accent-color: #2f6fb5; }
+.lyr-sw { width: 14px; height: 0; border-top: 2.5px solid; flex: none; }
+.lyr-sw.halo { outline: 1px solid rgba(0,0,0,0.45); }
+.lyr-sw.dot { width: 8px; height: 8px; border: 0; border-radius: 50%; margin: 0 3px; box-shadow: 0 0 0 1px rgba(0,0,0,0.4); }
+.lyr-sw.ras { width: 14px; height: 10px; border: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.25); }
+.lyr-sw.none { border-color: transparent; }
+.lyr-lg { margin: 1px 8px 5px 44px; font-size: 10.5px; color: var(--chrome-muted); font-variant-numeric: tabular-nums; }
+.lyr-lg .bar, .lg .bar.log { height: 8px; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.2); }
+.lyr-lg .tka, .lg .tka { position: relative; height: 13px; margin-top: 1px; }
+.lyr-lg .tka span, .lg .tka span { position: absolute; transform: translateX(-50%); }
+.lyr-lg .tka span:first-child, .lg .tka span:first-child { transform: none; }
+.lyr-lg .tka span:last-child, .lg .tka span:last-child { transform: translateX(-100%); }
+.mapbox { position: relative; flex: 1; min-width: 0; background: var(--map-bg); touch-action: none; overflow: hidden; }
+#map { display: block; width: 100%; cursor: grab; outline: none; }
+#map.dragging { cursor: grabbing; }
+#map:focus-visible { box-shadow: inset 0 0 0 2px var(--cal); }
+.gis-time { display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-bottom: 1px solid var(--chrome-line); background: var(--chrome); }
+.time-track { flex: 1; min-width: 0; margin: 0 8px; }
+.time-track input[type=range] { width: 100%; margin: 0; accent-color: #2f6fb5; }
+#passLabel { font-size: 11.5px; min-width: 44px; text-align: right; }
+.statusbar { display: flex; align-items: stretch; background: var(--chrome); font-size: 11.5px; font-variant-numeric: tabular-nums; overflow: hidden; }
+.sb-item { padding: 3px 10px; border-right: 1px solid var(--chrome-line); white-space: nowrap; }
+.sb-item:last-child { border-right: 0; }
+.sb-grow { flex: 1; overflow: hidden; text-overflow: ellipsis; color: var(--chrome-muted); }
+@media (max-width: 760px) {
+  .gis-body { flex-direction: column; }
+  .layers { width: auto; border-right: 0; border-bottom: 1px solid var(--chrome-line); max-height: 260px; }
+  .statusbar { flex-wrap: wrap; } .sb-grow { flex-basis: 100%; order: 9; border-top: 1px solid var(--chrome-line); }
+}
+.legend-k { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.legend-k .v { margin-left: auto; padding-left: 6px; font-variant-numeric: tabular-nums; }
+.swatch { display: inline-block; width: 16px; height: 0; border-top: 2px solid; vertical-align: middle; }
+.swatch.dash { border-top-style: dashed; }
+.hud { font-size: 13px; color: var(--ink-2); margin-top: 10px; min-height: 1.5em; }
+.ctlrow { display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; margin-top: 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; flex: 1 1 520px; }
+.caption { margin: 10px 0 0; }
+.modelpick { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ink-2); }
+.modelpick select { font: inherit; font-size: 13px; color: var(--ink); background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 5px 28px 5px 10px; cursor: pointer; }
+#modelTable tbody tr { cursor: pointer; }
+#modelTable tbody tr:hover td { background: var(--surface-2); }
+#modelTable tbody tr.sel td { background: var(--surface-2); }
+#modelTable td .sw { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: -1px; }
+#modelTable td.best { font-weight: 700; }
+label.chip { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px;
+  font-size: 12.5px; cursor: pointer; background: var(--surface-2); user-select: none; }
+label.chip input { margin: 0; accent-color: var(--ink); }
+input[type=range] { width: 100%; accent-color: var(--disc); }
+.ticks { position: relative; height: 14px; font-size: 10px; color: var(--chrome-muted); font-variant-numeric: tabular-nums; }
+.ticks span { position: absolute; top: 2px; transform: translateX(-50%); white-space: nowrap; }
+@media (max-width: 900px) { .ticks span.minor { display: none; } }
+/* --- equation panel --- */
+.eqhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.eqgrid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.eqgrid > div { min-width: 0; }
+@media (max-width: 960px) { .eqgrid { grid-template-columns: minmax(0, 1fr); gap: 8px; } }
+.eqright .tablewrap { margin-top: 0; }
+.eq { background: var(--teal-soft); color: var(--teal-ink); border-radius: 10px; padding: 14px; font-family: var(--mono);
+  font-size: 19px; line-height: 1.9; display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
+.eq .lhs { font-weight: 700; margin-right: 2px; }
+.eq .chipt { background: rgba(255,255,255,0.55); border: 1px solid rgba(11,94,64,0.18); border-radius: 7px; padding: 0 8px;
+  white-space: nowrap; line-height: 1.6; }
+:root[data-theme="dark"] .eq .chipt { background: rgba(0,0,0,0.25); border-color: rgba(143,230,196,0.2); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .eq .chipt { background: rgba(0,0,0,0.25); border-color: rgba(143,230,196,0.2); } }
+.eqvars { font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+.status { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 10px 0 4px; font-size: 13px; color: var(--ink-2); }
+.status b { color: var(--ink); font-weight: 650; font-variant-numeric: tabular-nums; }
+.explain { margin: 8px 0 0; padding-left: 18px; color: var(--ink-2); }
+.explain li { margin: 3px 0; }
+.explain li.noise { color: var(--warn-ink); }
+.explain li.noise::marker { content: "⚠ "; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--muted); font-weight: 600; font-size: 12px; }
+.tablewrap { overflow-x: auto; margin-top: 12px; }
+@media (max-width: 640px) {
+  th, td { padding: 6px 5px; }
+  table { font-size: 12.5px; }
+  #modelTable th:nth-child(4), #modelTable td:nth-child(4) { display: none; }
+}
+.bars { display: grid; grid-template-columns: max-content minmax(60px, 1fr) max-content; gap: 4px 10px; align-items: center; margin-top: 6px; font-size: 13px; }
+.bars .t { font-family: var(--mono); }
+.bars .track { position: relative; height: 12px; }
+.bars .fill { position: absolute; top: 2px; height: 8px; border-radius: 0 4px 4px 0; background: var(--disc); }
+.bars .fill.neg { border-radius: 4px 0 0 4px; }
+.bars .axis0 { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--axis); }
+.bars .thr { position: absolute; top: -2px; bottom: -2px; width: 0; border-left: 1px dashed var(--muted); }
+.bars .v { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.bars .dropped { color: var(--muted); }
+.sliders { display: grid; gap: 12px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--grid); }
+.sl label { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+.sl .val { font-variant-numeric: tabular-nums; font-weight: 600; }
+.linkbtn { background: none; border: none; padding: 0; color: var(--cal); cursor: pointer; font-size: 12px; text-decoration: underline; }
+section { margin-top: 18px; }
+.panels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 10px; }
+@media (max-width: 720px) { .panels { grid-template-columns: minmax(0,1fr); } }
+.foot { margin: 22px 0 8px; font-size: 12px; color: var(--muted); text-align: center; line-height: 1.6; }
+.foot a { color: var(--ink-2); text-decoration: underline; text-underline-offset: 2px; }
+.foot a:hover { color: var(--ink); }
+.inpanels { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px 12px; margin-top: 12px; }
+@media (max-width: 1100px) { .inpanels { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .inpanels { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.mgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; }
+@media (max-width: 960px) { .mgrid { grid-template-columns: minmax(0, 1fr); gap: 0; } }
+#liveTable td, #liveTable th, #checkTable td, #checkTable th { text-align: left; vertical-align: top; }
+#checkTable td.ok { color: var(--disc); font-weight: 600; white-space: nowrap; }
+#checkTable td.warn { color: var(--phys); font-weight: 600; white-space: nowrap; }
+#liveTable tr.used td { font-weight: 600; }
+@media (max-width: 460px) { .inpanels { grid-template-columns: minmax(0, 1fr); } }
+.inpanel { margin: 0; min-width: 0; }
+.inpanel canvas { display: block; width: 100%; border-radius: 8px; background: var(--surface-2); }
+.inpanel figcaption { margin-top: 6px; font-size: 12.5px; display: flex; flex-direction: column; gap: 1px; }
+.inpanel figcaption .muted { font-size: 11px; line-height: 1.35; }
+.lg { margin-top: 5px; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.lg .bar { height: 8px; border-radius: 3px; }
+.lg .tk { display: flex; justify-content: space-between; margin-top: 2px; }
+.lg .cat { display: inline-flex; align-items: center; gap: 5px; margin-right: 10px; }
+.lg .cat i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+#useTable td, #useTable th { text-align: left; }
+#cmpTable td.closer b { color: var(--disc); }
+#cmpTable td.truth { color: var(--ink-2); }
+#useTable td.kept { color: var(--disc); font-weight: 600; }
+#useTable td.off { color: var(--muted); }
+#useTable .use-note { font-weight: 400; font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+#useTable td.kept { font-variant-numeric: tabular-nums; }
+#notKept { margin-top: 8px; }
+.panel canvas { width: 100%; height: auto; display: block; border-radius: 8px; image-rendering: pixelated; }
+.panel .cap { display: flex; justify-content: space-between; font-size: 12.5px; margin-top: 6px; gap: 8px; }
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+@media (max-width: 720px) { .kpis { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.kpi { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; background: var(--surface); }
+.kpi .lab { font-size: 12px; color: var(--muted); }
+.kpi .val { font-size: 28px; font-weight: 650; line-height: 1.15; }
+.kpi .cmp { font-size: 12px; color: var(--ink-2); }
+.kpi .who { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; }
+.kpi .who i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.chartbox { position: relative; margin-top: 10px; }
+#chart { width: 100%; display: block; overflow: visible; }
+.tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 7px 9px; font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); display: none; min-width: 150px; z-index: 5; }
+.tip .r { display: flex; justify-content: space-between; gap: 12px; font-variant-numeric: tabular-nums; }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.seg button { border: none; border-radius: 0; background: transparent; padding: 4px 9px; font-size: 12.5px; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; margin-top: 10px; }
+@media (max-width: 860px) { .steps { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 480px) { .steps { grid-template-columns: minmax(0,1fr); } }
+.step { border: 1px solid var(--border); border-radius: 10px; padding: 12px; background: var(--surface); }
+.step .n { font-size: 12px; color: var(--muted); font-weight: 600; }
+.step h4 { margin: 4px 0 6px; font-size: 15px; }
+.step p { margin: 0; color: var(--ink-2); font-size: 13px; }
+.lim { margin-top: 12px; background: var(--warn-bg); color: var(--warn-ink); border-radius: 10px; padding: 12px 14px; }
+.lim ul { margin: 6px 0 0; padding-left: 18px; }
+.busy { opacity: 0.55; transition: opacity 0.15s; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="topbar" aria-label="Site">
+    <span class="brand"><i aria-hidden="true"></i>Fire Spread Discovery</span>
+    <span class="small muted">FLAME 3 · Hanna Hammock plot 1 · 28 Feb 2023</span>
+  </nav>
+
+  <!-- MAP: a desktop-GIS-style window (toolbar, docked layer tree, canvas, time controller, status bar) -->
+  <section class="gis" id="gisWin" aria-label="Map window">
+    <div class="gis-toolbar" role="toolbar" aria-label="Map tools">
+      <button class="tb" id="zoomIn" aria-label="Zoom in"><svg viewBox="0 0 16 16"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l4.5 4.5M4.4 6.5h4.2M6.5 4.4v4.2"/></svg></button>
+      <button class="tb" id="zoomOut" aria-label="Zoom out"><svg viewBox="0 0 16 16"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l4.5 4.5M4.4 6.5h4.2"/></svg></button>
+      <button class="tb" id="zoomFit" aria-label="Zoom to the plot"><svg viewBox="0 0 16 16"><path d="M1.5 5.5v-4h4M10.5 1.5h4v4M14.5 10.5v4h-4M5.5 14.5h-4v-4"/><rect x="5" y="5" width="6" height="6"/></svg></button>
+      <span class="tb-sep"></span>
+      <button class="tb on" id="toolPan" aria-label="Pan tool" aria-pressed="true"><svg viewBox="0 0 16 16"><path d="M8 1.5v13M1.5 8h13M8 1.5L6.3 3.2M8 1.5l1.7 1.7M8 14.5l-1.7-1.7M8 14.5l1.7-1.7M1.5 8l1.7-1.7M1.5 8l1.7 1.7M14.5 8l-1.7-1.7M14.5 8l-1.7 1.7"/></svg></button>
+      <span class="tb-sep"></span>
+      <button class="tb tb-txt" id="tool3d" aria-label="3D view" aria-pressed="false"><svg viewBox="0 0 16 16"><path d="M8 1.5l5.5 3v7L8 14.5l-5.5-3v-7z"/><path d="M2.5 4.5L8 7.5l5.5-3M8 7.5v7"/></svg><span>3D</span></button>
+      <label class="tb-ex" id="exWrap" hidden>Height ×<input type="range" id="ex3d" min="1" max="20" step="1" value="6" aria-label="Height exaggeration"><span id="exVal" class="mono">6</span></label>
+      <span class="tb-sep"></span>
+      <button class="tb on" id="lyrToggle" aria-label="Layers panel" aria-pressed="true" aria-controls="layers"><svg viewBox="0 0 16 16"><path d="M8 2l6 3-6 3-6-3 6-3z"/><path d="M2 8l6 3 6-3M2 11l6 3 6-3"/></svg></button>
+    </div>
+    <div class="gis-body">
+      <aside class="layers" id="layers" aria-label="Layers">
+        <div class="pane-title">Layers</div>
+        <div class="lyr-body" id="lyrBody"></div>
+      </aside>
+      <div class="mapbox" id="mapbox">
+        <canvas id="map" tabindex="0" aria-label="Map canvas: drag to pan, mouse wheel or pinch to zoom; plus and minus keys zoom, arrow keys pan, 0 zooms to the plot."></canvas>
+        <div class="map3d" id="map3d" hidden aria-label="3D view: drag to rotate, right-drag or shift-drag to pan, wheel to zoom"><div class="msg3d" id="msg3d"></div></div>
+      </div>
+    </div>
+    <div class="gis-time" role="group" aria-label="Time controller">
+      <button class="tb" id="prevSnap" aria-label="Previous snapshot"><svg viewBox="0 0 16 16"><path d="M10.5 3L5.5 8l5 5"/></svg></button>
+      <button class="tb" id="play" aria-label="Play"><svg viewBox="0 0 16 16"><path class="fill" d="M4.5 2.5v11l9-5.5z"/></svg></button>
+      <button class="tb" id="nextSnap" aria-label="Next snapshot"><svg viewBox="0 0 16 16"><path d="M5.5 3l5 5-5 5"/></svg></button>
+      <div class="time-track">
+        <input id="passSlider" type="range" min="0" max="19" step="1" aria-label="Snapshot">
+        <div class="ticks" id="passTicks"></div>
+      </div>
+      <span class="mono" id="passLabel"></span>
+    </div>
+    <div class="statusbar" id="statusbar" aria-live="off">
+      <span class="sb-item" id="sbCoord">Coordinate –</span>
+      <span class="sb-item" id="sbScale"></span>
+      <span class="sb-item" id="sbZoom"></span>
+      <span class="sb-item sb-grow" id="sbWind"></span>
+      <span class="sb-item" id="sbCrs"></span>
+    </div>
+  </section>
+
+  <!-- MODEL INPUTS -->
+  <section class="card" id="inputsCard">
+    <div class="row spread">
+      <h2>Model inputs</h2>
+      <span class="small muted" id="inSub"></span>
+    </div>
+    <div class="inpanels">
+      <figure class="inpanel" id="inTwrap"><canvas id="inT"></canvas><figcaption><b>Surface temperature</b><span class="muted" id="inTsub">°C · drone LWIR, frames before the fire arrived</span><div class="lg" id="lgT"></div></figcaption></figure>
+      <figure class="inpanel"><canvas id="inM"></canvas><figcaption><b>Fine dead fuel moisture</b><span class="muted" id="inMsub">fraction · from the temperature and the air humidity</span><div class="lg" id="lgM"></div></figcaption></figure>
+      <figure class="inpanel" id="inLwrap"><canvas id="inL"></canvas><figcaption><b>Live fuel moisture</b><span class="muted" id="inLsub">Sentinel-2 NDII</span><div class="lg" id="lgL"></div></figcaption></figure>
+      <figure class="inpanel"><canvas id="inZ"></canvas><figcaption><b>Terrain</b><span class="muted">elevation, 0.5 m contours, arrows = upslope · 3DEP lidar</span><div class="lg" id="lgZ"></div></figcaption></figure>
+      <figure class="inpanel"><canvas id="inF"></canvas><figcaption><b>Fuel model</b><span class="muted">LANDFIRE 2022 FBFM40</span><div class="lg" id="lgF"></div></figcaption></figure>
+      <figure class="inpanel"><canvas id="inU"></canvas><figcaption><b>Midflame wind</b><span class="muted">m/s · 20-ft wind × canopy reduction (LANDFIRE)</span><div class="lg" id="lgU"></div></figcaption></figure>
+    </div>
+    <p class="small muted caption">{{inputs_caption}}</p>
+    <div id="moistBlock">
+      <h3 style="margin-top:18px">Is the thermal fuel moisture OK?</h3>
+      <div class="tablewrap" style="margin-top:4px"><table id="checkTable" aria-label="Checks of the thermal fuel moisture"><thead></thead><tbody></tbody></table></div>
+    </div>
+    <h3 style="margin-top:18px">Which model uses what</h3>
+    <div class="tablewrap" style="margin-top:4px">
+      <table id="useTable" aria-label="Inputs used by each model"><thead></thead><tbody></tbody></table>
+    </div>
+  </section>
+
+  <!-- DISCOVERED EQUATION (full width, two columns) -->
+  <section class="card" id="eqCard">
+    <div class="eqhead">
+      <h2>Discovered equation</h2>
+      <span class="pill teal" id="eqPill"><span class="dot"></span><span id="eqPillText"></span></span>
+    </div>
+    <div class="eqgrid">
+      <div class="eqleft">
+        <div class="eq" id="eq" aria-live="polite"></div>
+        <div class="eqvars">{{eqvars}}</div>
+        <div class="status" id="eqStatus"></div>
+        <ul class="explain" id="explain"></ul>
+        <div class="small muted" id="notKept"></div>
+      </div>
+      <div class="eqright">
+        <div class="tablewrap">
+          <table id="cmpTable" aria-label="Discovered vs physics">
+            <thead><tr><th>Quantity</th><th>Discovered</th><th id="cmpPhysHead">Physics model</th><th>Ground truth (observed)</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <div class="small muted" id="cmpNote" style="margin-top:6px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORECAST TEST -->
+  <section class="card">
+    <div class="row spread">
+      <h2 id="fcTitle">Forecast test</h2>
+      <span class="small muted" id="fcSub"></span>
+    </div>
+    <div class="panels">
+      <div class="panel"><canvas id="pActual"></canvas><div class="cap"><b>Actual next perimeter</b><span id="capActual" class="muted"></span></div></div>
+      <div class="panel"><canvas id="pPhys"></canvas><div class="cap"><b style="color:var(--phys)" id="physName">Physics</b><span id="capPhys" class="muted"></span></div></div>
+      <div class="panel"><canvas id="pDisc"></canvas><div class="cap"><b style="color:var(--disc)">Discovered equation</b><span id="capDisc" class="muted"></span></div></div>
+    </div>
+    <div class="small muted" style="margin-top:6px">{{panel_caption}}</div>
+    <h3 style="margin-top:20px">Model comparison</h3>
+    <div class="tablewrap" style="margin-top:4px">
+      <table id="modelTable" aria-label="Model comparison">
+        <thead><tr><th>Model</th><th>New-area IoU ↑</th><th>Mean front error ↓</th><th>p90 front error ↓</th><th>Arrival-time error ↓</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="small muted" style="margin-top:6px" id="modelTableNote"></div>
+
+  </section>
+
+  <footer class="foot">{{footer}}</footer>
+</div>
+
+<script id="demo-data" type="application/json">/*__DEMO_DATA__*/null</script>
+
+<script id="core">
+// ==CORE START== (pure functions; mirrored from pipeline/forecast.py and pipeline/discover.py)
+const CORE = (() => {
+  const NDIR = 72, DIRS = Array.from({length: NDIR}, (_, i) => i * 360 / NDIR);
+  const VALID = new Uint8Array(NDIR * NDIR), INV = new Float64Array(NDIR * NDIR);
+  for (let k = 0; k < NDIR; k++) for (let j = 0; j < NDIR; j++) {
+    const c = Math.cos((DIRS[k] - DIRS[j]) * Math.PI / 180);
+    VALID[k * NDIR + j] = c > 0.05 ? 1 : 0; INV[k * NDIR + j] = c > 0.05 ? 1 / c : 1;
+  }
+  const rad = d => d * Math.PI / 180;
+
+  function wulff(Rn, N) { // Rn: Float64Array(N*NDIR) normal speeds -> polar radius
+    const out = new Float64Array(N * NDIR);
+    for (let s = 0; s < N; s++) {
+      const o = s * NDIR;
+      for (let k = 0; k < NDIR; k++) {
+        let m = Infinity;
+        for (let j = 0; j < NDIR; j++) if (VALID[k * NDIR + j]) {
+          const v = Math.max(Rn[o + j], 0) * INV[k * NDIR + j]; if (v < m) m = v;
+        }
+        out[o + k] = m;
+      }
+    }
+    return out;
+  }
+
+  // skip: optional mask of pixels whose arrival time is never needed (already
+  // burnt / not fuel) - they cannot change the forecast mask or any metric.
+  function arrival(rows, cols, tau0, r, r0, H, W, horizon, res, skip) {
+    const AT = new Float64Array(H * W).fill(Infinity);
+    const step = 360 / NDIR;
+    for (let s = 0; s < rows.length; s++) {
+      const tmax = horizon - tau0[s]; if (tmax < 0) continue;
+      let rmax = 0; for (let k = 0; k < NDIR; k++) rmax = Math.max(rmax, r[s * NDIR + k]);
+      let reach = (rmax * tmax + r0[s]) / res; if (reach < 0.5) reach = 0.5;
+      const rl = Math.max(Math.floor(rows[s] - reach), 0), rh = Math.min(Math.ceil(rows[s] + reach) + 1, H);
+      const cl = Math.max(Math.floor(cols[s] - reach), 0), ch = Math.min(Math.ceil(cols[s] + reach) + 1, W);
+      for (let y = rl; y < rh; y++) {
+        const dr = y - rows[s];
+        for (let x = cl; x < ch; x++) {
+          const p0 = y * W + x;
+          if (skip && skip[p0]) continue;
+          const dc = x - cols[s];
+          const rho = Math.sqrt(dr * dr + dc * dc) * res;
+          const dlb = Math.max(rho - r0[s], 0);
+          // exact lower bound from the largest wavelet radius: skip if it cannot beat AT
+          if (dlb > 0 && (rmax <= 0 || tau0[s] + dlb / rmax >= AT[p0])) continue;
+          let az = Math.atan2(dc, -dr) * 180 / Math.PI; az = ((az % 360) + 360) % 360;
+          const fi = az / step, i0 = Math.floor(fi) % NDIR, f = fi - Math.floor(fi);
+          const rr = r[s * NDIR + i0] * (1 - f) + r[s * NDIR + (i0 + 1) % NDIR] * f;
+          const d = Math.max(rho - r0[s], 0);
+          const t = (d <= 0 ? 0 : (rr > 0 ? d / rr : Infinity)) + tau0[s];
+          const p = y * W + x; if (t < AT[p]) AT[p] = t;
+        }
+      }
+    }
+    for (let p = 0; p < AT.length; p++) if (AT[p] > horizon) AT[p] = Infinity;
+    return AT;
+  }
+
+  // ---- normal-speed models (mirror discover.library / physics.field_normal_speed) ----
+  // f: per-point inputs {U midflame wind, I FRFD, k curvature, m 1-h moisture, tan slope, up upslope az (deg), R0, P}
+  const TERMFN = {"1": () => 1, cos: (c) => c, sin: (c, s) => s, cos2: (c) => c * c, U: (c, s, f) => f.U, Ucos: (c, s, f) => f.U * c,
+    I: (c, s, f) => f.I, Icos: (c, s, f) => f.I * c, k: (c, s, f) => f.k, kcos: (c, s, f) => f.k * c, m: (c, s, f) => f.m,
+    s: (c, s, f, th, wt) => f.tan * Math.cos(th + rad(wt - f.up)), R0: (c, s, f) => f.R0, P: (c, s, f) => f.P,
+    Rr: (c, s, f, th, wt, j) => f.Rr[j], Rf: (c, s, f, th, wt, j) => f.Rf[j], T: (c, s, f) => f.T};
+  let KEYS = ["1", "cos", "sin", "cos2", "I", "Icos", "k", "kcos"], SIGNS = KEYS.map(() => 0), FORCED = KEYS.map(() => false), PEN = KEYS.map(() => 1);
+  function setKeys(keys, signs, forced, pen) { KEYS = keys.slice(); M = KEYS.length; SIGNS = signs ? signs.slice() : KEYS.map(() => 0);
+    FORCED = forced ? forced.slice() : KEYS.map(() => false); PEN = pen ? pen.slice() : KEYS.map(() => 1); }
+  function libRow(th, f, wt) { const c = Math.cos(th), s = Math.sin(th); return KEYS.map(key => TERMFN[key](c, s, f, th, wt)); }
+  function speedsField(F, cells, cap) { // per-cell ellipse (a, b, c, az) -> normal speeds of each source
+    const N = cells.length, Rn = new Float64Array(N * NDIR);
+    for (let i = 0; i < N; i++) {
+      const p = cells[i];
+      for (let j = 0; j < NDIR; j++) {
+        const th = rad(DIRS[j] - F.az[p]), c = Math.cos(th), s = Math.sin(th);
+        Rn[i * NDIR + j] = Math.min(F.c[p] * c + Math.sqrt((F.a[p] * c) ** 2 + (F.b[p] * s) ** 2), cap);
+      }
+    }
+    return Rn;
+  }
+  function speedsDisc(feats, windTo, beta, cap) {
+    const N = feats.length, Rn = new Float64Array(N * NDIR);
+    const fns = KEYS.map(key => TERMFN[key]), M_ = fns.length;
+    for (let j = 0; j < NDIR; j++) {
+      const th = rad(DIRS[j] - windTo), c = Math.cos(th), s = Math.sin(th);
+      for (let i = 0; i < N; i++) {
+        let v = 0; for (let q = 0; q < M_; q++) v += beta[q] * fns[q](c, s, feats[i], th, windTo, j);
+        Rn[i * NDIR + j] = Math.min(Math.max(v, 0), cap);
+      }
+    }
+    return Rn;
+  }
+
+  // ---- spatial model inputs and per-cell physics (mirror landscape.py / physics.py) ----
+  function b64u8(str) { const bin = typeof atob === "function" ? atob(str) : Buffer.from(str, "base64").toString("binary"); const o = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) o[i] = bin.charCodeAt(i); return o; }
+  function rle8(a, N) { const o = new Uint8Array(N); let p = 0; for (let i = 0; i < a.length; i += 2) { o.fill(a[i], p, p + a[i + 1]); p += a[i + 1]; } return o; }
+  function landscape(Lm, N, W) {
+    const Q = Lm.quant, deq = (u, k) => { const [lo, st] = Q[k], o = new Float64Array(N); for (let p = 0; p < N; p++) o[p] = lo + u[p] * st; return o; };
+    const mq = b64u8(Lm.m1), tq = b64u8(Lm.tan_slope), uq = b64u8(Lm.up_az), wq = rle8(Lm.waf, N), cq = rle8(Lm.cc, N), eq = b64u8(Lm.elev);
+    const elev = new Float64Array(N); for (let p = 0; p < N; p++) elev[p] = Lm.elev_q[0] + eq[p] * Lm.elev_q[1];
+    let tpre = null;
+    if (Lm.tpre) { const tq2 = b64u8(Lm.tpre); tpre = new Float64Array(N); for (let p = 0; p < N; p++) tpre[p] = Lm.tpre_q[0] + tq2[p] * Lm.tpre_q[1]; }
+    let ndii = null;
+    if (Lm.ndii) { const nq = b64u8(Lm.ndii); ndii = new Float64Array(N); for (let p = 0; p < N; p++) ndii[p] = Lm.ndii_q[0] + nq[p] * Lm.ndii_q[1]; }
+    // per-snapshot fine dead fuel moisture: 1 m blocks repeated onto the 0.5 m grid (mirrors landscape.moisture_maps)
+    const MT = Lm.m1_t, mts = {};
+    const snap = p => {
+      if (!MT || !W) return null;
+      const k = Math.min(Math.max(p, MT.first), MT.first + MT.maps.length - 1);
+      if (!mts[k]) {
+        const q = b64u8(MT.maps[k - MT.first]), H = N / W, m = new Float64Array(N), mqs = new Uint8Array(N), [lo, st] = Q.m1;
+        for (let r = 0; r < H; r++) for (let c = 0; c < W; c++) { const v = q[(r >> 1) * MT.w2 + (c >> 1)]; mqs[r * W + c] = v; m[r * W + c] = lo + v * st; }
+        mts[k] = {m1: m, mq: mqs, snapshot: k};
+        if (Lm.t_t) { // the surface temperature behind this moisture map (display only)
+          const tq = b64u8(Lm.t_t.maps[k - MT.first]), T = new Float64Array(N), e = Lm.t_t.enc, lr = Math.log(e.log_hi / e.log_lo);
+          const dec = v => (v < e.split ? e.lin_lo + v * e.lin_st : e.log_lo * Math.exp(lr * (v - e.split) / e.log_n));
+          for (let r = 0; r < H; r++) for (let c = 0; c < W; c++) T[r * W + c] = dec(tq[(r >> 1) * MT.w2 + (c >> 1)]);
+          mts[k].T = T;
+        }
+      }
+      return mts[k];
+    };
+    return {N, mq, m1: deq(mq, "m1"), tan: deq(tq, "tan_slope"), up: deq(uq, "up_az"), waf: deq(wq, "waf"), cc: deq(cq, "cc"),
+            fuel: rle8(Lm.fuel, N), elev, ndii, tpre, fuelNames: Lm.fuel_names, snap};
+  }
+  const FTMIN = 0.00508;
+  function rothField(L, R, U20, windTo) { // Rothermel per cell: canopy-reduced wind + slope as vectors, Anderson L/B
+    const N = L.N, a = new Float64Array(N), b = new Float64Array(N), c = new Float64Array(N), az = new Float64Array(N), Rh = new Float64Array(N);
+    const wt = rad(windTo);
+    for (let p = 0; p < N; p++) {
+      const f = L.fuel[p], q = L.mq[p], R0 = R.R0[f][q], IR = R.IR[f][q], C = R.C[f], B = R.B[f], E = R.E[f], ratio = R.ratio[f], beta = R.beta[f];
+      const u = Math.min(L.waf[p] * U20 / FTMIN, 0.9 * IR);
+      const phiw = u > 0 ? C * Math.pow(Math.max(u, 1e-12), B) * Math.pow(ratio, -E) : 0;
+      const phis = 5.275 * Math.pow(beta, -0.3) * L.tan[p] ** 2;
+      const up = rad(L.up[p]), vx = phiw * Math.sin(wt) + phis * Math.sin(up), vy = phiw * Math.cos(wt) + phis * Math.cos(up);
+      const phi = Math.hypot(vx, vy);
+      az[p] = phi > 0 ? (((Math.atan2(vx, vy) * 180 / Math.PI) % 360) + 360) % 360 : windTo % 360;
+      const ueff = Math.pow(phi / (C * Math.pow(ratio, -E)), 1 / B) * FTMIN;
+      const lb = Math.max(andersonLB(ueff), 1), e = Math.sqrt(1 - 1 / (lb * lb));
+      const RH = R0 * (1 + phi), RB = RH * (1 - e) / (1 + e), A = 0.5 * (RH + RB);
+      a[p] = A; b[p] = A / lb; c[p] = 0.5 * (RH - RB); Rh[p] = RH;
+    }
+    return {a, b, c, az, Rh};
+  }
+  function fbpField(L, P, U10, windTo) { // FBP (ST-X-3): FFMC from moisture, 10 m wind + slope-equivalent wind as vectors
+    const N = L.N, a = new Float64Array(N), b = new Float64Array(N), c = new Float64Array(N), az = new Float64Array(N), Rh = new Float64Array(N);
+    const wt = rad(windTo), ws = U10 * 3.6, be = P.bui ? Math.exp(50 * Math.log(P.q) * (1 / P.bui - 1 / P.bui0)) : 1;
+    for (let p = 0; p < N; p++) {
+      const m = L.m1[p] * 100, ff = 91.9 * Math.exp(-0.1386 * m) * (1 + Math.pow(m, 5.31) / 4.93e7);
+      const gs = Math.min(100 * L.tan[p], P.slope_max), sf = Math.exp(3.533 * Math.pow(gs / 100, 1.2));
+      const rsf = P.a * Math.pow(1 - Math.exp(-P.b * 0.208 * ff), P.c) * sf;
+      const x = 1 - Math.pow(Math.min(rsf / P.a, 1), 1 / P.c);
+      const isf = (x >= 0.01 ? Math.log(Math.max(x, 1e-12)) : Math.log(0.01)) / -P.b;
+      let wse = Math.log(Math.max(isf, 1e-12) / (0.208 * ff)) / 0.05039;
+      wse = gs > 0 ? (wse > 40 ? 28 - Math.log(1 - Math.min(0.999 * 2.496 * ff, isf) / (2.496 * ff)) / 0.0818 : Math.max(wse, 0)) : 0;
+      const up = rad(L.up[p]), wx = ws * Math.sin(wt) + wse * Math.sin(up), wy = ws * Math.cos(wt) + wse * Math.cos(up);
+      const wsv = Math.hypot(wx, wy);
+      az[p] = wsv > 0 ? (((Math.atan2(wx, wy) * 180 / Math.PI) % 360) + 360) % 360 : windTo % 360;
+      const fw = wsv > 40 ? 12 * (1 - Math.exp(-0.0818 * (wsv - 28))) : Math.exp(0.05039 * wsv);
+      const ros = P.a * Math.pow(1 - Math.exp(-P.b * 0.208 * fw * ff), P.c) * be / 60;
+      const bros = P.a * Math.pow(1 - Math.exp(-P.b * 0.208 * Math.exp(-0.05039 * wsv) * ff), P.c) * be / 60;
+      const lb = Math.max(1 + 8.729 * Math.pow(1 - Math.exp(-0.030 * wsv), 2.155), 1), A = 0.5 * (ros + bros);
+      a[p] = A; b[p] = A / lb; c[p] = 0.5 * (ros - bros); Rh[p] = ros;
+    }
+    return {a, b, c, az, Rh};
+  }
+  // per-model forecast options shared by the page and tests/check_js_core.js
+  function models(meta, H, W) {
+    const L = landscape(meta.layers, H * W, W), cache = new Map();
+    const at = i => { const s = L.snap(i); return s ? Object.assign({}, L, s) : L; };   // inputs with snapshot i's moisture
+    const field = (fam, iv) => {
+      const key = `${fam}|${iv.U20}|${iv.U10}|${iv.wd_from}|${iv.i}`, wt = (iv.wd_from + 180) % 360;
+      if (!cache.has(key)) {
+        const Li = at(iv.i);
+        cache.set(key, fam === "fbp" ? fbpField(Li, meta.fbp, iv.U10, wt) : rothField(Li, meta.rothermel, iv.U20, wt));
+        if (cache.size > 8) cache.delete(cache.keys().next().value);   // fields change every snapshot: keep a few
+      }
+      return cache.get(key);
+    };
+    const def = Object.fromEntries(meta.models.map(x => [x.key, x]));
+    function opt(model, iv, extra) {
+      const o = Object.assign({cap: meta.R_CAP, ignR0: meta.IGN_R0, L: at(iv.i), R: meta.rothermel}, extra || {});
+      if (model === "disc") { o.engine = "disc"; o.fieldR = field("rothermel", iv); o.fieldF = field("fbp", iv); }
+      else if (model === "baseline") o.engine = "none";
+      else {
+        const d = def[model]; o.engine = d.engine;
+        if (d.field) { o.field = field(d.field, iv); if (d.engine === "mtt") o.inv = o.field.inv || (o.field.inv = mttInverse(o.field, H * W)); }
+      }
+      return o;
+    }
+    return {L, field, opt};
+  }
+
+  // ---- FlamMap-style minimum travel time (Finney 2002), mirrors forecast.mtt_inverse_speeds / mtt_arrival ----
+  const MTT_OFF = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [-1, 1], [1, -1], [1, 1],
+                   [-1, -2], [-1, 2], [1, -2], [1, 2], [-2, -1], [-2, 1], [2, -1], [2, 1]];
+  function mttInverse(F, N) { // (N*16) inverse ray speeds (s/m) of each cell's ellipse, ignition at the rear focus
+    const inv = new Float64Array(N * 16);
+    MTT_OFF.forEach(([dr, dc], d) => {
+      const azd = Math.atan2(dc, -dr) * 180 / Math.PI;
+      for (let p = 0; p < N; p++) {
+        const a = F.a[p], c = F.c[p], e = a > 0 ? c / a : 0;
+        const r = (a + c) * (1 - e) / (1 - e * Math.cos(rad(azd - F.az[p])));
+        inv[p * 16 + d] = a > 0 && r > 0 ? 1 / r : Infinity;
+      }
+    });
+    return inv;
+  }
+  function mttArrival(rows, cols, tau0, inv, pass, H, W, horizon, res) {
+    const AT = new Float64Array(H * W).fill(Infinity);
+    const half = MTT_OFF.map(([dr, dc]) => 0.5 * Math.hypot(dr, dc) * res);
+    let hT = new Float64Array(1024), hQ = new Int32Array(1024), n = 0;
+    const push = (t, q) => {
+      if (n === hT.length) { const T2 = new Float64Array(n * 2), Q2 = new Int32Array(n * 2); T2.set(hT); Q2.set(hQ); hT = T2; hQ = Q2; }
+      let i = n++; while (i > 0) { const p = (i - 1) >> 1; if (hT[p] <= t) break; hT[i] = hT[p]; hQ[i] = hQ[p]; i = p; } hT[i] = t; hQ[i] = q;
+    };
+    const pop = () => {
+      const t = hT[0], q = hQ[0], lt = hT[--n], lq = hQ[n]; let i = 0;
+      while (true) { let c = 2 * i + 1; if (c >= n) break; if (c + 1 < n && hT[c + 1] < hT[c]) c++; if (hT[c] >= lt) break; hT[i] = hT[c]; hQ[i] = hQ[c]; i = c; }
+      if (n > 0) { hT[i] = lt; hQ[i] = lq; } return [t, q];
+    };
+    for (let s = 0; s < rows.length; s++) {
+      const rr = Math.floor(rows[s] + 0.5), cc = Math.floor(cols[s] + 0.5);
+      if (rr >= 0 && rr < H && cc >= 0 && cc < W && tau0[s] <= horizon) { const q = rr * W + cc; if (tau0[s] < AT[q]) { AT[q] = tau0[s]; push(tau0[s], q); } }
+    }
+    while (n > 0) {
+      const [t, q] = pop();
+      if (t > AT[q] || t > horizon) continue;
+      const r0 = (q / W) | 0, c0 = q - r0 * W;
+      for (let d = 0; d < 16; d++) {
+        const nr = r0 + MTT_OFF[d][0], nc = c0 + MTT_OFF[d][1];
+        if (nr < 0 || nr >= H || nc < 0 || nc >= W) continue;
+        const nq = nr * W + nc;
+        if (!pass[nq]) continue;
+        const nt = t + half[d] * (inv[q * 16 + d] + inv[nq * 16 + d]);
+        if (nt < AT[nq] && nt <= horizon) { AT[nq] = nt; push(nt, nq); }
+      }
+    }
+    for (let p = 0; p < AT.length; p++) if (AT[p] > horizon) AT[p] = Infinity;
+    return AT;
+  }
+
+  function cellsOf(rows, cols, H, W) { // nearest cell, same rounding as landscape.sample
+    const o = new Int32Array(rows.length);
+    for (let i = 0; i < rows.length; i++) {
+      const r = Math.min(Math.max(Math.floor(rows[i] + 0.5), 0), H - 1), c = Math.min(Math.max(Math.floor(cols[i] + 0.5), 0), W - 1);
+      o[i] = r * W + c;
+    }
+    return o;
+  }
+  // ---- one interval forecast ----
+  // opt.engine: "none" (no spread) | "huygens" (opt.field per-cell ellipses) | "mtt" (opt.inv, FlamMap) | "persist" | "disc"
+  function forecast(model, iv, old, fuel, H, W, res, opt) {
+    const nf = iv.front.r.length, ni = iv.ign.r.length;
+    const windTo = (iv.wd_from + 180) % 360, eng = opt.engine || (model === "baseline" ? "none" : model === "disc" ? "disc" : "huygens");
+    let rows = iv.front.r.concat(iv.ign.r), cols = iv.front.c.concat(iv.ign.c);
+    let tau0 = Array(nf).fill(0).concat(iv.ign.tau0), r0 = Array(nf).fill(0).concat(Array(ni).fill(opt.ignR0));
+    let AT;
+    if (eng === "mtt") {
+      const pass = new Uint8Array(H * W);
+      for (let p = 0; p < pass.length; p++) pass[p] = fuel[p] && !old[p] ? 1 : 0;
+      AT = mttArrival(rows, cols, tau0, opt.inv, pass, H, W, 2 * iv.dt, res);
+    } else {
+      let r;
+      if (eng === "none") r = new Float64Array((nf + ni) * NDIR);
+      else if (eng === "huygens") r = wulff(speedsField(opt.field, cellsOf(rows, cols, H, W), opt.cap), nf + ni);
+      else if (eng === "persist") { // isotropic wavelet at the last observed local rate
+        const P = iv.front.P.concat(Array(ni).fill(iv.P_ign));
+        r = new Float64Array((nf + ni) * NDIR); for (let i = 0; i < nf + ni; i++) r.fill(Math.min(Math.max(P[i], 0), opt.cap), i * NDIR, (i + 1) * NDIR);
+      } else {
+        const L = opt.L, R = opt.R, cells = cellsOf(rows, cols, H, W), feats = new Array(nf + ni);
+        const RR = opt.fieldR ? speedsField(opt.fieldR, cells, opt.cap) : null, RF = opt.fieldF ? speedsField(opt.fieldF, cells, opt.cap) : null;
+        for (let i = 0; i < nf + ni; i++) {
+          const p = cells[i], fr = i < nf;
+          feats[i] = {U: L.waf[p] * iv.U20, I: fr ? iv.front.I[i] : opt.Iref, k: fr ? iv.front.k[i] : 0, m: L.m1[p], tan: L.tan[p], up: L.up[p],
+                      R0: R.R0[L.fuel[p]][L.mq[p]], P: fr ? iv.front.Pm[i] : iv.P_ign, T: L.tpre ? L.tpre[p] : 0,
+                      Rr: RR ? RR.subarray(i * NDIR, (i + 1) * NDIR) : null, Rf: RF ? RF.subarray(i * NDIR, (i + 1) * NDIR) : null};
+        }
+        r = wulff(speedsDisc(feats, windTo, opt.beta, opt.cap), nf + ni);
+      }
+      let rr = r;
+      if (eng === "none") { rows = rows.slice(nf); cols = cols.slice(nf); tau0 = tau0.slice(nf); r0 = r0.slice(nf); rr = r.subarray(nf * NDIR); }
+      const skip = new Uint8Array(H * W);
+      for (let p = 0; p < skip.length; p++) skip[p] = old[p] || !fuel[p] ? 1 : 0;
+      AT = arrival(rows, cols, tau0, rr, r0, H, W, 2 * iv.dt, res, skip);
+    }
+    const pred = new Uint8Array(H * W);
+    for (let p = 0; p < pred.length; p++) pred[p] = ((old[p] || AT[p] <= iv.dt) && fuel[p]) ? 1 : 0;
+    return {pred, AT};
+  }
+
+  // ---- metrics ----
+  function dilate(m, H, W, it) { // 4-connected (scipy's default cross), border = 0
+    let a = m;
+    for (let n = 0; n < it; n++) {
+      const b = new Uint8Array(a);
+      for (let y = 0; y < H; y++) {
+        const o = y * W;
+        for (let x = 0; x < W; x++) if (a[o + x]) {
+          if (x > 0) b[o + x - 1] = 1; if (x < W - 1) b[o + x + 1] = 1;
+          if (y > 0) b[o + x - W] = 1; if (y < H - 1) b[o + x + W] = 1;
+        }
+      }
+      a = b;
+    }
+    return a;
+  }
+  function edt1(f, n, d, v, z) { // Felzenszwalb squared EDT, 1-D
+    let k = 0; v[0] = 0; z[0] = -Infinity; z[1] = Infinity;
+    for (let q = 1; q < n; q++) {
+      if (f[q] === Infinity) continue;
+      if (f[v[k]] === Infinity) { v[k] = q; z[k] = -Infinity; z[k + 1] = Infinity; continue; }
+      let s;
+      while (true) { s = ((f[q] + q * q) - (f[v[k]] + v[k] * v[k])) / (2 * q - 2 * v[k]); if (s <= z[k] && k > 0) k--; else break; }
+      if (s <= z[k]) { v[k] = q; z[k] = -Infinity; z[k + 1] = Infinity; } else { k++; v[k] = q; z[k] = s; z[k + 1] = Infinity; }
+    }
+    if (f[v[0]] === Infinity) { for (let q = 0; q < n; q++) d[q] = Infinity; return; }
+    k = 0;
+    for (let q = 0; q < n; q++) { while (z[k + 1] < q) k++; d[q] = (q - v[k]) ** 2 + f[v[k]]; }
+  }
+  function edt(feat, H, W) { // distance (px) to nearest feature pixel
+    const g = new Float64Array(H * W), n = Math.max(H, W);
+    const f = new Float64Array(n), d = new Float64Array(n), v = new Int32Array(n), z = new Float64Array(n + 1);
+    for (let x = 0; x < W; x++) { for (let y = 0; y < H; y++) f[y] = feat[y * W + x] ? 0 : Infinity; edt1(f, H, d, v, z); for (let y = 0; y < H; y++) g[y * W + x] = d[y]; }
+    for (let y = 0; y < H; y++) { for (let x = 0; x < W; x++) f[x] = g[y * W + x]; edt1(f, W, d, v, z); for (let x = 0; x < W; x++) g[y * W + x] = Math.sqrt(d[x]); }
+    return g;
+  }
+  function frontOf(mask, fuel, H, W) {
+    const out = new Uint8Array(H * W), un = new Uint8Array(H * W);
+    for (let p = 0; p < un.length; p++) un[p] = !mask[p] && fuel[p] ? 1 : 0;
+    const dn = dilate(un, H, W, 1);
+    for (let p = 0; p < out.length; p++) out[p] = mask[p] && dn[p] ? 1 : 0;
+    return out;
+  }
+  function nearest(feat, p, H, W) { // exact Euclidean distance (px) to the nearest set pixel, ring search
+    const y0 = Math.floor(p / W), x0 = p - y0 * W, Rmax = Math.max(H, W);
+    let best = Infinity;
+    for (let R = 0; R <= Rmax; R++) {
+      if (R * R > best) break;
+      const ya = y0 - R, yb = y0 + R, xa = x0 - R, xb = x0 + R;
+      for (let x = Math.max(xa, 0); x <= Math.min(xb, W - 1); x++) {
+        if (ya >= 0 && feat[ya * W + x]) best = Math.min(best, R * R + (x - x0) ** 2);
+        if (yb < H && R > 0 && feat[yb * W + x]) best = Math.min(best, R * R + (x - x0) ** 2);
+      }
+      for (let y = Math.max(ya + 1, 0); y <= Math.min(yb - 1, H - 1); y++) {
+        if (xa >= 0 && feat[y * W + xa]) best = Math.min(best, R * R + (y - y0) ** 2);
+        if (xb < W && R > 0 && feat[y * W + xb]) best = Math.min(best, R * R + (y - y0) ** 2);
+      }
+    }
+    return Math.sqrt(best);
+  }
+  function pct(a, q) { if (!a.length) return NaN; const s = Float64Array.from(a).sort(); const i = q * (s.length - 1), lo = Math.floor(i), hi = Math.ceil(i); return s[lo] + (s[hi] - s[lo]) * (i - lo); }
+  function metrics(pred0, act0, old0, fuel, AT, dt, H, W, res) {
+    const N = H * W, pred = new Uint8Array(N), act = new Uint8Array(N), old = new Uint8Array(N), pn = new Uint8Array(N), an = new Uint8Array(N), pa = new Uint8Array(N);
+    let inter = 0, uni = 0, ni = 0, nu = 0;
+    for (let p = 0; p < N; p++) {
+      pred[p] = pred0[p] && fuel[p]; act[p] = act0[p] && fuel[p]; old[p] = old0[p] && fuel[p];
+      inter += pred[p] && act[p]; uni += pred[p] || act[p];
+      pn[p] = pred[p] && !old[p]; an[p] = act[p] && !old[p]; pa[p] = pn[p] || an[p];
+      ni += pn[p] && an[p]; nu += pa[p];
+    }
+    const Pf = frontOf(pred, fuel, H, W), Af = frontOf(act, fuel, H, W), region = dilate(pa, H, W, 3);
+    let anyP = 0, anyA = 0; for (let p = 0; p < N; p++) { anyP |= Pf[p]; anyA |= Af[p]; }
+    const d = [];
+    for (let p = 0; p < N; p++) if (region[p]) {
+      if (Af[p] && anyP) d.push(nearest(Pf, p, H, W) * res);
+      if (Pf[p] && anyA) d.push(nearest(Af, p, H, W) * res);
+    }
+    let se = 0, ne = 0;
+    for (let p = 0; p < N; p++) {
+      const at = Math.min(isFinite(AT[p]) ? AT[p] : 2 * dt, 2 * dt);
+      if (an[p]) { se += Math.max(at - dt, 0); ne++; } else if (pn[p]) { se += Math.max(dt - at, 0); ne++; }
+    }
+    const mean = d.length ? d.reduce((a, b) => a + b, 0) / d.length : NaN;
+    return {iou: inter / Math.max(uni, 1), iou_new: ni / Math.max(nu, 1), front_mean_m: mean, front_p90_m: pct(d, 0.9), arrival_err_s: ne ? se / ne : 0};
+  }
+
+  // ---- STLSQ from block sufficient statistics ----
+  let M = 10;
+  function sumBlocks(blocks, passes) {
+    const AtA = Array.from({length: M}, () => new Float64Array(M)), Aty = new Float64Array(M); let yty = 0, n = 0;
+    for (const b of blocks) if (passes.has(b.p)) {
+      let q = 0; for (let i = 0; i < M; i++) for (let j = i; j < M; j++) { AtA[i][j] += b.A[q]; if (j !== i) AtA[j][i] += b.A[q]; q++; }
+      for (let i = 0; i < M; i++) Aty[i] += b.b[i]; yty += b.yy; n += b.n;
+    }
+    return {AtA, Aty, yty, n};
+  }
+  function solve(A, b) { // Gaussian elimination, partial pivoting
+    const n = b.length, a = A.map((r, i) => [...r, b[i]]);
+    for (let c = 0; c < n; c++) {
+      let p = c; for (let r = c + 1; r < n; r++) if (Math.abs(a[r][c]) > Math.abs(a[p][c])) p = r;
+      [a[c], a[p]] = [a[p], a[c]];
+      for (let r = c + 1; r < n; r++) { const f = a[r][c] / a[c][c]; for (let k = c; k <= n; k++) a[r][k] -= f * a[c][k]; }
+    }
+    const x = new Array(n).fill(0);
+    for (let r = n - 1; r >= 0; r--) { let s = a[r][n]; for (let k = r + 1; k < n; k++) s -= a[r][k] * x[k]; x[r] = s / a[r][r]; }
+    return x;
+  }
+  function stlsq(S, lam, ridge) {
+    const {AtA, Aty, n} = S, mu = AtA[0].map(v => v / n), sd = new Array(M).fill(1);
+    for (let k = 1; k < M; k++) sd[k] = Math.sqrt(Math.max(AtA[k][k] / n - mu[k] ** 2, 1e-18));
+    const T = Array.from({length: M}, (_, i) => Array.from({length: M}, (_, j) => (i === j ? (i === 0 ? 1 : 1 / sd[i]) : 0)));
+    for (let k = 1; k < M; k++) T[0][k] = -mu[k] / sd[k];
+    const AT_ = Array.from({length: M}, (_, i) => Array.from({length: M}, (_, j) => { let s = 0; for (let k = 0; k < M; k++) s += AtA[i][k] * T[k][j]; return s; }));
+    const G = Array.from({length: M}, (_, i) => Array.from({length: M}, (_, j) => { let s = 0; for (let k = 0; k < M; k++) s += T[k][i] * AT_[k][j]; return s; }));
+    const b = Array.from({length: M}, (_, i) => { let s = 0; for (let k = 0; k < M; k++) s += T[k][i] * Aty[k]; return s; });
+    const reg = i => (i === 0 ? 0 : ridge * n * PEN[i]);   // per-term ridge weight (0 = not shrunk)
+    let active = new Array(M).fill(true), xi = new Array(M).fill(0);
+    const fit = act => {
+      const idx = act.map((a, i) => (a ? i : -1)).filter(i => i >= 0);
+      const sub = idx.map(i => idx.map(j => G[i][j] + (i === j ? reg(i) : 0)));
+      const x = solve(sub, idx.map(i => b[i])); const out = new Array(M).fill(0); idx.forEach((i, q) => (out[i] = x[q])); return out;
+    };
+    for (let it = 0; it < 20; it++) {
+      xi = fit(active);
+      const nw = xi.map((v, i) => (Math.abs(v) >= lam && SIGNS[i] * v >= 0) || FORCED[i]); nw[0] = true;
+      if (nw.every((v, i) => v === active[i])) break;
+      active = nw;
+    }
+    xi = fit(active);
+    const beta = Array.from({length: M}, (_, i) => { let s = 0; for (let k = 0; k < M; k++) s += T[i][k] * xi[k]; return s; });
+    return {beta, xi, active, sd, mu};
+  }
+  function r2(beta, S) {
+    const {AtA, Aty, yty, n} = S; let bAy = 0, bAb = 0;
+    for (let i = 0; i < M; i++) { bAy += beta[i] * Aty[i]; for (let j = 0; j < M; j++) bAb += beta[i] * AtA[i][j] * beta[j]; }
+    const sse = yty - 2 * bAy + bAb, sst = yty - Aty[0] ** 2 / n;
+    return n > 0 ? 1 - sse / sst : NaN;
+  }
+  function bootstrap(blocks, passes, lam, ridge, reps, seed) {
+    const tr = blocks.filter(b => passes.has(b.p)); let s = seed >>> 0;
+    const rnd = () => { s = (s + 0x6D2B79F5) >>> 0; let t = s; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    const inc = new Array(M).fill(0), all = new Set(tr.map(b => b.p));
+    for (let r = 0; r < reps; r++) {
+      const pick = []; for (let i = 0; i < tr.length; i++) pick.push(tr[Math.floor(rnd() * tr.length)]);
+      const f = stlsq(sumBlocks(pick, all), lam, ridge); f.active.forEach((a, i) => (inc[i] += a ? 1 : 0));
+    }
+    return inc.map(v => v / reps);
+  }
+
+  // ---- wavelet summary & Anderson ----
+  function waveletSummary(Rfun, n = 360) {
+    const th = Array.from({length: n}, (_, i) => -Math.PI + 2 * Math.PI * i / n), R = th.map(t => Math.max(Rfun(t), 0));
+    const r = new Array(n);
+    for (let k = 0; k < n; k++) { let m = Infinity; for (let j = 0; j < n; j++) { const c = Math.cos(th[k] - th[j]); if (c > 0.02) m = Math.min(m, R[j] / c); } r[k] = m; }
+    let i = 0; for (let k = 1; k < n; k++) if (r[k] > r[i]) i = k;
+    const head = r[i], ang = th[i], back = r[(i + n / 2) % n];
+    let lo = Infinity, hi = -Infinity; for (let k = 0; k < n; k++) { const l = r[k] * Math.sin(th[k] - ang); lo = Math.min(lo, l); hi = Math.max(hi, l); }
+    const flank = 0.5 * (hi - lo);
+    return {head, back, flank, lb: flank > 0 ? (head + back) / (2 * flank) : Infinity, head_dir: ang * 180 / Math.PI};
+  }
+  const MPH = 0.44704;
+  const andersonLB = u => { const m = u / MPH; return 0.936 * Math.exp(0.2566 * m) + 0.461 * Math.exp(-0.1548 * m) - 0.397; };
+  function andersonInv(lb) { if (lb <= 1) return 0; let lo = 0, hi = 30 * MPH; for (let i = 0; i < 60; i++) { const mid = (lo + hi) / 2; if (andersonLB(mid) < lb) lo = mid; else hi = mid; } return (lo + hi) / 2; }
+  function lbFromHB(head, back, lbMax = 8) { if (back <= 0) return lbMax; const hb = head / back; if (hb <= 1) return 1; const e = (hb - 1) / (hb + 1); return Math.min(1 / Math.sqrt(1 - e * e), lbMax); }
+  function discSpeed(beta, f, windTo) { return th => { const r = libRow(th, f, windTo); let s = 0; for (let i = 0; i < r.length; i++) s += beta[i] * r[i]; return Math.max(s, 0); }; }
+
+  function decodeRLE(rle, N) { const out = new Uint8Array(N); let v = rle[0], p = 0; for (let i = 1; i < rle.length; i++) { if (v) out.fill(1, p, p + rle[i]); p += rle[i]; v = 1 - v; } return out; }
+
+  return {NDIR, DIRS, wulff, arrival, forecast, metrics, sumBlocks, stlsq, r2, bootstrap, waveletSummary, andersonInv, lbFromHB, discSpeed,
+          decodeRLE, edt, setKeys, models, landscape, rothField, fbpField, mttInverse, get M() { return M; }};
+})();
+if (typeof module !== "undefined") module.exports = CORE;
+// ==CORE END==
+</script>
+
+<script>
+(() => {
+const D = JSON.parse(document.getElementById("demo-data").textContent);
+const meta = D.meta, H = meta.H, W = meta.W, RES = meta.res, N0 = meta.n_pre, NP = meta.n_pass;
+const TERMS = meta.terms;
+CORE.setKeys(TERMS.map(t => t.key), TERMS.map(t => t.sign || 0), TERMS.map(t => !!t.forced), TERMS.map(t => (t.pen == null ? 1 : t.pen)));
+const LBL = meta.labels, FW = LBL.frame, fw = LBL.frame.toLowerCase();
+const iUcos = TERMS.findIndex(t => t.key === "Ucos");
+const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const fmt = (v, d = 3) => (v == null || !isFinite(v) ? "–" : v.toFixed(d));
+const hhmm = s => { s = ((s % 86400) + 86400) % 86400; const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), ss = Math.floor(s % 60); return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(ss).padStart(2, "0")}`; };
+
+// ---------- theme ----------
+const root = document.documentElement;
+
+
+// ---------- decode ----------
+const fuel = CORE.decodeRLE(D.fuel, H * W);
+const FOOT = meta.footprint ? CORE.decodeRLE(meta.footprint, H * W) : null;
+const MOD = CORE.models(meta, H, W), LAND = MOD.L;
+const BASEMAP = meta.basemap ? new Image() : null;
+if (BASEMAP) { BASEMAP.onload = () => drawMap(); BASEMAP.src = "data:image/jpeg;base64," + meta.basemap.jpg; }
+const BM_EXT = meta.basemap ? (b => [(b[0] - meta.x0) / RES, (meta.y0 - b[3]) / RES, (b[2] - meta.x0) / RES, (meta.y0 - b[1]) / RES])(meta.basemap.bounds) : null;
+const burnt = D.burnt.map(r => CORE.decodeRLE(r, H * W));
+const IV = D.intervals; // index ii = i - N0
+const LUT = []; for (let i = 0; i < 256; i++) LUT.push([0, 2, 4].map(o => parseInt(meta.color.lut.substr(i * 6 + o, 2), 16)));
+
+// LWIR images -> colour-mapped offscreen canvases (lazy)
+const imgCache = new Array(NP), gray = new Array(NP);
+function lwir(p) {
+  if (imgCache[p]) return Promise.resolve(imgCache[p]);
+  return new Promise(res => {
+    const im = new Image();
+    im.onload = () => {
+      const c = document.createElement("canvas"); c.width = W; c.height = H;
+      const g = c.getContext("2d"); g.drawImage(im, 0, 0);
+      const d = g.getImageData(0, 0, W, H);
+      const gv = new Uint8Array(W * H); for (let q = 0, i = 0; q < d.data.length; q += 4, i++) gv[i] = d.data[q]; gray[p] = gv;
+      for (let q = 0; q < d.data.length; q += 4) { const v = d.data[q], col = LUT[v]; d.data[q] = col[0]; d.data[q + 1] = col[1]; d.data[q + 2] = col[2]; d.data[q + 3] = v <= 2 || (FOOT && !FOOT[q >> 2]) ? 0 : 255; } // outside the drone frame = transparent
+      g.putImageData(d, 0, 0); imgCache[p] = c; res(c); if (p === S.pass) drawMap();
+    };
+    im.src = "data:image/jpeg;base64," + D.images[p];
+  });
+}
+
+// ---------- contours (marching squares + chaining) ----------
+const contourCache = new WeakMap();
+const contourCacheClamped = new WeakMap();
+function contours(mask, clamp) { // clamp: treat the grid border as continuing (fields such as elevation), so no border lines
+  const cache = clamp ? contourCacheClamped : contourCache;
+  if (cache.has(mask)) return cache.get(mask);
+  const at = clamp ? (r, c) => mask[Math.min(Math.max(r, 0), H - 1) * W + Math.min(Math.max(c, 0), W - 1)]
+                   : (r, c) => (r >= 0 && r < H && c >= 0 && c < W ? mask[r * W + c] : 0);
+  const segs = [];
+  const E = { t: (r, c) => [r, c + 0.5], r: (r, c) => [r + 0.5, c + 1], b: (r, c) => [r + 1, c + 0.5], l: (r, c) => [r + 0.5, c] };
+  const T = {1: [["l", "b"]], 2: [["b", "r"]], 3: [["l", "r"]], 4: [["t", "r"]], 5: [["l", "t"], ["b", "r"]], 6: [["t", "b"]], 7: [["l", "t"]],
+             8: [["l", "t"]], 9: [["t", "b"]], 10: [["t", "r"], ["l", "b"]], 11: [["t", "r"]], 12: [["l", "r"]], 13: [["b", "r"]], 14: [["l", "b"]]};
+  for (let r = -1; r < H; r++) for (let c = -1; c < W; c++) {
+    const k = at(r, c) * 8 + at(r, c + 1) * 4 + at(r + 1, c + 1) * 2 + at(r + 1, c);
+    if (k === 0 || k === 15) continue;
+    for (const [a, b] of T[k]) segs.push([E[a](r, c), E[b](r, c)]);
+  }
+  const key = p => (p[0] * 2 + 4) * 100000 + (p[1] * 2 + 4);
+  const adj = new Map();
+  segs.forEach((s, i) => { for (const p of s) { const k = key(p); if (!adj.has(k)) adj.set(k, []); adj.get(k).push(i); } });
+  const used = new Uint8Array(segs.length), lines = [];
+  for (let i = 0; i < segs.length; i++) {
+    if (used[i]) continue; used[i] = 1;
+    const line = [segs[i][0], segs[i][1]];
+    for (const dir of [1, 0]) {
+      while (true) {
+        const end = dir ? line[line.length - 1] : line[0];
+        const nb = (adj.get(key(end)) || []).find(j => !used[j]);
+        if (nb === undefined) break;
+        used[nb] = 1;
+        const s = segs[nb], nxt = key(s[0]) === key(end) ? s[1] : s[0];
+        if (dir) line.push(nxt); else line.unshift(nxt);
+      }
+    }
+    lines.push(line);
+  }
+  cache.set(mask, lines);
+  return lines;
+}
+function strokeContours(g, mask, scale, color, width, dash, clamp) {
+  g.save(); g.strokeStyle = color; g.lineWidth = width; g.lineJoin = "round"; g.lineCap = "round"; g.setLineDash(dash || []);
+  g.beginPath();
+  for (const ln of contours(mask, clamp)) { ln.forEach((p, i) => { const x = (p[1] + 0.5) * scale, y = (p[0] + 0.5) * scale; i ? g.lineTo(x, y) : g.moveTo(x, y); }); }
+  g.stroke(); g.restore();
+}
+
+// ---------- state ----------
+const S = { pass: Math.min(N0 + meta.default_k, NP - 1), k: meta.default_k, lam: D.splits[meta.default_k].lam_cv,
+  vis: {}, timer: null, physModel: meta.default_model || meta.models[0].key };
+const PMODELS = meta.models.map(x => x.key), ALLM = ["disc", ...PMODELS, "baseline"];
+const MDEF = Object.fromEntries(meta.models.map(x => [x.key, x]));
+const modelName = k => (k === "disc" ? "Discovered equation" : (MDEF[k] || {}).name || (meta.model_names || {})[k] || k);
+const FC = Object.fromEntries(ALLM.map(k => [k, []]));
+let FIT = null;
+
+// Forecast jobs run progressively (interval on screen first) so sliders stay responsive.
+function runJob(model, ii) {
+  const iv = IV[ii], sp = D.splits[S.k];
+  const opt = MOD.opt(model, iv, model === "disc" ? {beta: FIT.beta, Iref: sp.refs.I} : {});
+  const f = CORE.forecast(model, iv, burnt[iv.i], fuel, H, W, RES, opt);
+  f.m = CORE.metrics(f.pred, burnt[iv.i + 1], burnt[iv.i], fuel, f.AT, iv.dt, H, W, RES);
+  FC[model][ii] = f;
+}
+let QUEUE = [], running = false;
+const curII = () => { const ii = S.pass - 1 - N0; return ii >= 0 && ii < IV.length ? ii : D.splits[S.k].test[0] - N0; };
+function schedule(models) {
+  QUEUE = QUEUE.filter(([m]) => !models.includes(m));
+  const cur = curII(), jobs = [];
+  for (const m of models) { FC[m] = FC[m].map(() => undefined); jobs.push([m, cur]); }
+  for (const m of models) IV.forEach((_, ii) => { if (ii !== cur) jobs.push([m, ii]); });
+  QUEUE = jobs.concat(QUEUE);
+  document.body.classList.add("busy");
+  if (!running) { running = true; setTimeout(pump, 0); }
+}
+function pump() {
+  const t0 = performance.now(), cur = curII(); let touched = false;
+  while (QUEUE.length && performance.now() - t0 < 40) { const [m, ii] = QUEUE.shift(); runJob(m, ii); if (ii === cur) touched = true; }
+  if (touched) { renderMap(); renderForecast(); }
+  if (QUEUE.length) { setTimeout(pump, 0); return; }
+  running = false; document.body.classList.remove("busy"); renderMap(); renderForecast();
+}
+const ready = (m, ii) => FC[m][ii] !== undefined;
+const allReady = m => IV.every((_, ii) => ready(m, ii));
+function computeFit() {
+  const sp = D.splits[S.k], tr = new Set(sp.train), te = new Set(sp.test);
+  const Str = CORE.sumBlocks(D.blocks, tr), Ste = CORE.sumBlocks(D.blocks, te);
+  const f = CORE.stlsq(Str, S.lam, sp.ridge != null ? sp.ridge : meta.ridge);
+  f.r2tr = CORE.r2(f.beta, Str); f.r2te = Ste.n ? CORE.r2(f.beta, Ste) : NaN; f.ntr = Str.n; f.nte = Ste.n;
+  f.inclusion = null; FIT = f;
+}
+let bootTimer = null;
+function scheduleBootstrap() {
+  clearTimeout(bootTimer);
+  bootTimer = setTimeout(() => {
+    const tr = new Set(D.splits[S.k].train);
+    const sp = D.splits[S.k];
+    FIT.inclusion = CORE.bootstrap(D.blocks, tr, S.lam, sp.ridge != null ? sp.ridge : meta.ridge, 100, 7);
+    renderEquation();
+  }, 250);
+}
+
+// ---------- map: fitted, zoomable, pannable ----------
+const map = $("map"), mapbox = $("mapbox");
+const VIEW = {z: 1, cx: W / 2, cy: H / 2};   // zoom relative to "fit", view centre in image pixels
+let GEO = null;
+const burntSince = new Int16Array(H * W).fill(-1);
+burnt.forEach((b, p) => { for (let q = 0; q < b.length; q++) if (b[q] && burntSince[q] < 0) burntSince[q] = p; });
+function mapGeom() {
+  const cw = mapbox.clientWidth || 600, natural = cw * H / W;
+  let ch;
+  if (window.matchMedia("(min-width: 761px)").matches) {
+    // desktop: the map window fills the screen down to its bottom edge before the page scrolls
+    const win = $("gisWin"), top = win.getBoundingClientRect().top + window.scrollY;
+    const chrome = win.querySelector(".gis-toolbar").offsetHeight + win.querySelector(".gis-time").offsetHeight +
+                   $("statusbar").offsetHeight + 4;   // + borders
+    ch = Math.round(Math.max(360, window.innerHeight - top - chrome - 10));
+  } else ch = Math.round(Math.max(Math.min(natural, window.innerHeight * 0.72, 900), Math.min(natural, 320)));
+  const k0 = Math.min(cw / W, ch / H), k = k0 * VIEW.z;
+  return {cw, ch, k0, k, x: cw / 2 - VIEW.cx * k, y: ch / 2 - VIEW.cy * k};
+}
+// with a basemap you can zoom out like a GIS: the embedded image covers +-400 m; beyond it the page asks the
+// Esri map service for an image of the current view (online), as a dynamic map layer does
+const ZMIN = BM_EXT ? 0.004 : 1, PAN_M = 60000;
+function clampView() {
+  VIEW.z = Math.min(Math.max(VIEW.z, ZMIN), 24);
+  if (!BM_EXT && VIEW.z <= 1.0001) { VIEW.z = 1; VIEW.cx = W / 2; VIEW.cy = H / 2; return; }
+  const E = BM_EXT ? [-PAN_M / RES, -PAN_M / RES, W + PAN_M / RES, H + PAN_M / RES] : [0, 0, W, H];
+  VIEW.cx = Math.min(Math.max(VIEW.cx, Math.min(E[0], 0)), Math.max(E[2], W)); VIEW.cy = Math.min(Math.max(VIEW.cy, Math.min(E[1], 0)), Math.max(E[3], H));
+}
+function fitView() { VIEW.z = 1; VIEW.cx = W / 2; VIEW.cy = H / 2; drawMap(); }
+function zoomAt(f, sx, sy) {
+  const g = mapGeom(), ix = (sx - g.x) / g.k, iy = (sy - g.y) / g.k;
+  VIEW.z *= f; clampView();
+  if (VIEW.z > 1 || BM_EXT) { const k2 = g.k0 * VIEW.z; VIEW.cx = ix - (sx - g.cw / 2) / k2; VIEW.cy = iy - (sy - g.ch / 2) / k2; clampView(); }
+  drawMap();
+}
+function drawMap() {
+  const G = mapGeom(); GEO = G;
+  const dpr = window.devicePixelRatio || 1, p = S.pass, img = imgCache[p], V = S.vis;
+  if (map.width !== Math.round(G.cw * dpr) || map.height !== Math.round(G.ch * dpr)) { map.width = Math.round(G.cw * dpr); map.height = Math.round(G.ch * dpr); }
+  map.style.height = G.ch + "px";
+  const g = map.getContext("2d");
+  g.setTransform(dpr, 0, 0, dpr, 0, 0); g.fillStyle = css("--map-bg"); g.fillRect(0, 0, G.cw, G.ch);
+  g.setTransform(dpr * G.k, 0, 0, dpr * G.k, dpr * G.x, dpr * G.y);
+  const u = 1 / G.k;
+  // base maps: Esri topographic map over the whole extent, then the drone thermal image (transparent outside the frame)
+  if (V.basemap) {
+    if (BASEMAP && BASEMAP.complete && BASEMAP.naturalWidth) {   // embedded image: works offline
+      g.imageSmoothingEnabled = true; g.drawImage(BASEMAP, BM_EXT[0], BM_EXT[1], BM_EXT[2] - BM_EXT[0], BM_EXT[3] - BM_EXT[1]);
+    }
+    drawTiles(g, G);                                              // streamed service tiles, reprojected to the grid
+  }
+  if (V.relief && TERR) drawRelief(g, G);
+  if (img && V.thermal !== 0) { g.imageSmoothingEnabled = G.k < 4; g.drawImage(img, 0, 0, W, H); }
+  const lightInk = true;   // symbols are drawn over the dark thermal image
+  const ink = "rgba(255,255,255,";
+  // map elements
+  if (V.contours) for (const [mk, major] of elevMasks()) strokeContours(g, mk, 1, ink + (major ? "0.6)" : "0.3)"), (major ? 1.1 : 0.7) * u, null, true);
+  if (V.arrows) upslopeArrows(g, 1, u, ink + "0.9)", ink + "0.35)");
+  if (V.plot) strokeContours(g, fuel, 1, ink + "0.7)", 1.3 * u, [5 * u, 4 * u]);
+  // fire layers
+  const ii = p - 1 - N0;
+  if (ii >= 0 && ii < IV.length) {
+    const line = (mask, col, w) => { if (!lightInk) strokeContours(g, mask, 1, "rgba(20,16,12,0.55)", w + 1.6 * u); strokeContours(g, mask, 1, col, w); };
+    for (const k of PMODELS.slice().reverse()) if (V["m:" + k] && ready(k, ii)) line(FC[k][ii].pred, MCOL[k], 1.8 * u);
+    if (V["m:disc"] && ready("disc", ii)) line(FC.disc[ii].pred, MCOL.disc, 1.9 * u);
+    const iv = IV[ii];
+    if (V.front) dots(g, iv.front.r, iv.front.c, Math.max(0.45, 1.8 * u), lightInk ? "#f0efec" : "#1d1d1b", null);
+  }
+  if (V.real) strokeContours(g, burnt[p], 1, lightInk ? "#ffffff" : "#111111", 1.6 * u);
+  // map decorations (drawn on the canvas, as in desktop GIS): scale bar and north arrow
+  g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const mpp = RES / G.k;
+  if (V.contours) drawContourLabels(g, G);
+  drawScaleBar(g, G, mpp);
+  drawNorthArrow(g, G);
+  if (V.wind) { drawWindArrow(g, G, IV[Math.max(0, Math.min(p - 1 - N0, IV.length - 1))]); drawWeather(g, G, meta.t_utc[p]); }
+  if (window.matchMedia("(min-width: 761px)").matches) $("layers").style.height = G.ch + "px"; else $("layers").style.height = "";
+  // status bar: map scale for a 96 dpi screen, zoom
+  const sc = mpp / 0.0254 * 96, sc3 = Number(sc.toPrecision(2));
+  $("sbScale").innerHTML = `Scale <b>1:${sc3.toLocaleString()}</b>`;
+  $("sbZoom").innerHTML = `Zoom <b>${Math.round(VIEW.z * 100)} %</b>`;
+  if (V3.on) { $("sbZoom").innerHTML = `3D view · height <b>×${V3.ex}</b>`; $("sbScale").textContent = "Scale –"; refresh3D(); }
+}
+function statusCoord(sx, sy) {
+  if (!GEO) return;
+  const gx = (sx - GEO.x) / GEO.k, gy = (sy - GEO.y) / GEO.k;
+  const e = meta.x0 + gx * RES, n = meta.y0 - gy * RES, f = v => v.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1});
+  $("sbCoord").innerHTML = `Coordinate <b>${f(e)}, ${f(n)}</b>`;
+}
+// ---- projection (UTM, WGS84 ellipsoid; NAD83 differs by < 2 m here) and streamed basemap tiles ----
+const UTM_ZONE = +(((meta.crs || "").match(/269(\d\d)$/) || [0, 16])[1]), LON0 = (-183 + 6 * UTM_ZONE) * Math.PI / 180;
+const A_ = 6378137, F_ = 1 / 298.257223563, E2 = F_ * (2 - F_), EP2 = E2 / (1 - E2), K0 = 0.9996;
+function utmFwd(latd, lond) {
+  const p = latd * Math.PI / 180, l = lond * Math.PI / 180, s = Math.sin(p), c = Math.cos(p), t = Math.tan(p);
+  const N = A_ / Math.sqrt(1 - E2 * s * s), T = t * t, C = EP2 * c * c, A = c * (l - LON0), e4 = E2 * E2, e6 = e4 * E2;
+  const M = A_ * ((1 - E2 / 4 - 3 * e4 / 64 - 5 * e6 / 256) * p - (3 * E2 / 8 + 3 * e4 / 32 + 45 * e6 / 1024) * Math.sin(2 * p)
+    + (15 * e4 / 256 + 45 * e6 / 1024) * Math.sin(4 * p) - (35 * e6 / 3072) * Math.sin(6 * p));
+  const x = 500000 + K0 * N * (A + (1 - T + C) * A ** 3 / 6 + (5 - 18 * T + T * T + 72 * C - 58 * EP2) * A ** 5 / 120);
+  const y = K0 * (M + N * t * (A * A / 2 + (5 - T + 9 * C + 4 * C * C) * A ** 4 / 24 + (61 - 58 * T + T * T + 600 * C - 330 * EP2) * A ** 6 / 720));
+  return [x, y];
+}
+function utmInv(x, y) {
+  const e4 = E2 * E2, e6 = e4 * E2, mu = y / K0 / (A_ * (1 - E2 / 4 - 3 * e4 / 64 - 5 * e6 / 256)), e1 = (1 - Math.sqrt(1 - E2)) / (1 + Math.sqrt(1 - E2));
+  const p1 = mu + (3 * e1 / 2 - 27 * e1 ** 3 / 32) * Math.sin(2 * mu) + (21 * e1 * e1 / 16 - 55 * e1 ** 4 / 32) * Math.sin(4 * mu)
+    + (151 * e1 ** 3 / 96) * Math.sin(6 * mu) + (1097 * e1 ** 4 / 512) * Math.sin(8 * mu);
+  const s = Math.sin(p1), c = Math.cos(p1), t = Math.tan(p1), N1 = A_ / Math.sqrt(1 - E2 * s * s), T1 = t * t, C1 = EP2 * c * c;
+  const R1 = A_ * (1 - E2) / Math.pow(1 - E2 * s * s, 1.5), D = (x - 500000) / (N1 * K0);
+  const lat = p1 - (N1 * t / R1) * (D * D / 2 - (5 + 3 * T1 + 10 * C1 - 4 * C1 * C1 - 9 * EP2) * D ** 4 / 24
+    + (61 + 90 * T1 + 298 * C1 + 45 * T1 * T1 - 252 * EP2 - 3 * C1 * C1) * D ** 6 / 720);
+  const lon = LON0 + (D - (1 + 2 * T1 + C1) * D ** 3 / 6 + (5 - 2 * C1 + 28 * T1 - 3 * C1 * C1 + 8 * EP2 + 24 * T1 * T1) * D ** 5 / 120) / c;
+  return [lat * 180 / Math.PI, lon * 180 / Math.PI];
+}
+function viewBounds(G) {
+  const gx0 = -G.x / G.k, gx1 = (G.cw - G.x) / G.k, gy0 = -G.y / G.k, gy1 = (G.ch - G.y) / G.k;
+  return [meta.x0 + gx0 * RES, meta.y0 - gy1 * RES, meta.x0 + gx1 * RES, meta.y0 - gy0 * RES];   // xmin, ymin, xmax, ymax
+}
+const TILES = new Map(); let tileRaf = 0;
+function tileImg(service, z, x, y) {
+  const key = `${service}|${z}/${y}/${x}`; let t = TILES.get(key);
+  if (!t) {
+    t = new Image();
+    t.onload = () => { if (!tileRaf) tileRaf = requestAnimationFrame(() => { tileRaf = 0; drawMap(); }); };
+    t.src = `${service}/tile/${z}/${y}/${x}`;
+    TILES.set(key, t);
+    if (TILES.size > 600) TILES.delete(TILES.keys().next().value);
+  }
+  return t;
+}
+function drawTiles(g, G, service, zmax) { // Web Mercator tiles at the zoom level of the view, each drawn with its own affine fit to the UTM grid
+  service = service || (meta.basemap && meta.basemap.service); zmax = zmax || 18;
+  if (!service) return;
+  const vb = viewBounds(G), ll = [[vb[0], vb[1]], [vb[2], vb[1]], [vb[0], vb[3]], [vb[2], vb[3]]].map(([x, y]) => utmInv(x, y));
+  const lats = ll.map(v => v[0]), lons = ll.map(v => v[1]), lat0 = (Math.min(...lats) + Math.max(...lats)) / 2;
+  let z = Math.round(Math.log2(156543.034 * Math.cos(lat0 * Math.PI / 180) / (RES / G.k)));
+  z = Math.max(3, Math.min(zmax, z));
+  const n = 2 ** z, tx = lon => (lon + 180) / 360 * n;
+  const ty = lat => { const r = lat * Math.PI / 180; return (1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2 * n; };
+  const x0 = Math.floor(tx(Math.min(...lons))), x1 = Math.floor(tx(Math.max(...lons))), y0 = Math.floor(ty(Math.max(...lats))), y1 = Math.floor(ty(Math.min(...lats)));
+  if ((x1 - x0 + 1) * (y1 - y0 + 1) > 150) return;
+  const lonOf = x => x / n * 360 - 180, latOf = y => Math.atan(Math.sinh(Math.PI * (1 - 2 * y / n))) * 180 / Math.PI;
+  const grid = (lat, lon) => { const [e, nn] = utmFwd(lat, lon); return [(e - meta.x0) / RES, (meta.y0 - nn) / RES]; };
+  g.imageSmoothingEnabled = true;
+  for (let x = x0; x <= x1; x++) for (let y = y0; y <= y1; y++) {
+    const t = tileImg(service, z, x, y); if (!t.complete || !t.naturalWidth) continue;
+    const p0 = grid(latOf(y), lonOf(x)), p1 = grid(latOf(y), lonOf(x + 1)), p2 = grid(latOf(y + 1), lonOf(x));
+    g.save(); g.transform((p1[0] - p0[0]) / 256, (p1[1] - p0[1]) / 256, (p2[0] - p0[0]) / 256, (p2[1] - p0[1]) / 256, p0[0], p0[1]);
+    g.drawImage(t, 0, 0, 256.5, 256.5); g.restore();
+  }
+}
+// ---- terrain (3DEP, 3 m over the basemap extent): relief shading and the 3D view ----
+const TERR = meta.terrain3d ? (() => {
+  const t = meta.terrain3d, bin = atob(t.b64), n = t.w * t.h, z = new Float32Array(n);
+  for (let i = 0; i < n; i++) z[i] = t.z0 + (bin.charCodeAt(2 * i) | (bin.charCodeAt(2 * i + 1) << 8)) * t.step;
+  let lo = Infinity, hi = -Infinity; for (let i = 0; i < n; i++) { if (z[i] < lo) lo = z[i]; if (z[i] > hi) hi = z[i]; }
+  return Object.assign({}, t, {z, lo, hi});
+})() : null;
+let HILLSHADE = null;
+function hillshade() { // multiply layer: flat = white, slopes facing away from a NW sun darker; height x4 for this gentle terrain
+  if (HILLSHADE || !TERR) return HILLSHADE;
+  const {w, h, z, bounds} = TERR, dx = (bounds[2] - bounds[0]) / w, dy = (bounds[3] - bounds[1]) / h, ex = 4;
+  const c = document.createElement("canvas"); c.width = w; c.height = h;
+  const g = c.getContext("2d"), d = g.createImageData(w, h);
+  const zen = Math.PI / 4, azm = 135 * Math.PI / 180, at = (r, q) => z[Math.min(Math.max(r, 0), h - 1) * w + Math.min(Math.max(q, 0), w - 1)];
+  for (let r = 0; r < h; r++) for (let q = 0; q < w; q++) {
+    const gx = (at(r, q + 1) - at(r, q - 1)) / (2 * dx) * ex, gy = (at(r + 1, q) - at(r - 1, q)) / (2 * dy) * ex;
+    const sl = Math.atan(Math.hypot(gx, gy)), asp = Math.atan2(gy, -gx);
+    const hs = Math.cos(zen) * Math.cos(sl) + Math.sin(zen) * Math.sin(sl) * Math.cos(azm - asp);
+    const v = Math.round(255 * Math.min(Math.max(0.25 + 0.75 * hs / Math.cos(zen), 0), 1)), o = (r * w + q) * 4;
+    d.data[o] = d.data[o + 1] = d.data[o + 2] = v; d.data[o + 3] = 255;
+  }
+  g.putImageData(d, 0, 0);
+  return (HILLSHADE = c);
+}
+let RELIEF_TINT = null;
+function reliefTint() { // colour relief for the 3D model: elevation tints (green lowland -> tan -> brown hilltop) x hill-shading
+  if (RELIEF_TINT || !TERR) return RELIEF_TINT;
+  const hs = hillshade(), {w, h, z, lo, hi} = TERR, c = document.createElement("canvas"); c.width = w; c.height = h;
+  const sh = hs.getContext("2d").getImageData(0, 0, w, h).data, g = c.getContext("2d"), d = g.createImageData(w, h);
+  const ramp = ["#9fc193", "#c3d39d", "#dfdcab", "#e6cfa0", "#cfae82", "#b58d68"];
+  for (let i = 0; i < w * h; i++) {
+    const col = rampAt(ramp, (z[i] - lo) / Math.max(hi - lo, 1e-6)), k = 0.55 + 0.45 * sh[i * 4] / 255;
+    d.data[i * 4] = col[0] * k; d.data[i * 4 + 1] = col[1] * k; d.data[i * 4 + 2] = col[2] * k; d.data[i * 4 + 3] = 255;
+  }
+  g.putImageData(d, 0, 0);
+  return (RELIEF_TINT = c);
+}
+const HS_SERVICE = "https://server.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer";
+function drawRelief(g, G) {
+  g.save(); g.globalCompositeOperation = "multiply";
+  if (BM_EXT) {   // Esri World Hillshade outside the local 3DEP extent
+    const vb = viewBounds(G);
+    if (!(vb[0] >= TERR.bounds[0] && vb[1] >= TERR.bounds[1] && vb[2] <= TERR.bounds[2] && vb[3] <= TERR.bounds[3])) {
+      g.save(); g.beginPath(); g.rect(-1e7, -1e7, 2e7, 2e7); g.rect(BM_EXT[0], BM_EXT[1], BM_EXT[2] - BM_EXT[0], BM_EXT[3] - BM_EXT[1]); g.clip("evenodd");
+      g.globalAlpha = 0.5; drawTiles(g, G, HS_SERVICE, 16); g.restore();
+    }
+  }
+  const hs = hillshade();
+  if (hs) { g.globalAlpha = 0.85; g.imageSmoothingEnabled = true; g.drawImage(hs, BM_EXT[0], BM_EXT[1], BM_EXT[2] - BM_EXT[0], BM_EXT[3] - BM_EXT[1]); }
+  g.restore();
+}
+
+// ---- 3D view: three.js, loaded on first use; the topo map, relief, thermal image and fire lines draped on 3DEP terrain ----
+let T3 = null;
+const V3 = {on: false, ex: 6};
+function load3D() {
+  if (window.THREE) return Promise.resolve();
+  return new Promise((res, rej) => {
+    const sc = document.createElement("script"); sc.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+    sc.onload = res; sc.onerror = () => rej(new Error("The 3D engine could not be loaded (no internet connection?)."));
+    document.head.appendChild(sc);
+  });
+}
+function init3D() {
+  const THREE = window.THREE, box = $("map3d");
+  const renderer = new THREE.WebGLRenderer({antialias: true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  box.appendChild(renderer.domElement);
+  const scene = new THREE.Scene(); scene.background = new THREE.Color(css("--map-bg"));
+  const camera = new THREE.PerspectiveCamera(36, 1, 1, 60000);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const sun = new THREE.DirectionalLight(0xffffff, 0.65); sun.position.set(-700, 900, -700); scene.add(sun);   // from the north-west
+  const {w, h, bounds} = TERR, sx = bounds[2] - bounds[0], sy = bounds[3] - bounds[1];
+  const geo = new THREE.PlaneGeometry(sx, sy, w - 1, h - 1); geo.rotateX(-Math.PI / 2);   // row 0 = north = -z
+  const drape = document.createElement("canvas"); drape.width = 2048; drape.height = Math.round(2048 * sy / sx);
+  const tex = new THREE.CanvasTexture(drape); tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  const mesh = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({map: tex})); scene.add(mesh);
+  const skirt = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshLambertMaterial({color: 0xd8d0bf, side: THREE.DoubleSide}));
+  scene.add(skirt);
+  const pc = [meta.x0 + W * RES / 2 - bounds[0] - sx / 2, -(meta.y0 - H * RES / 2 - bounds[1] - sy / 2)];
+  T3 = {THREE, renderer, scene, camera, geo, mesh, skirt, drape, tex, sx, sy, pc, target: new THREE.Vector3(pc[0], 0, pc[1]), theta: 0.45, phi: 1.0, dist: 520};
+  bind3D(renderer.domElement);
+}
+function terrainY(i) { return (TERR.z[i] - TERR.lo) * V3.ex; }
+function setHeights3D() {
+  const {geo, skirt, THREE} = T3, pos = geo.attributes.position, {w, h} = TERR;
+  for (let i = 0; i < w * h; i++) pos.setY(i, terrainY(i));
+  pos.needsUpdate = true; geo.computeVertexNormals();
+  // relief-model sides down to a base below the lowest point
+  const base = -Math.max(6, 0.12 * (TERR.hi - TERR.lo) * V3.ex), v = [], idx = [];
+  const edge = (ids) => { const s0 = v.length / 3;
+    ids.forEach(i => { v.push(pos.getX(i), pos.getY(i), pos.getZ(i), pos.getX(i), base, pos.getZ(i)); });
+    for (let k = 0; k < ids.length - 1; k++) { const a = s0 + 2 * k; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); } };
+  const row = r => Array.from({length: w}, (_, q) => r * w + q), col = q => Array.from({length: h}, (_, r) => r * w + q);
+  edge(row(0)); edge(row(h - 1)); edge(col(0)); edge(col(w - 1));
+  const sg = new THREE.BufferGeometry(); sg.setAttribute("position", new THREE.Float32BufferAttribute(v, 3)); sg.setIndex(idx); sg.computeVertexNormals();
+  skirt.geometry.dispose(); skirt.geometry = sg;
+  // keep the orbit centre on the ground at the plot
+  const {bounds} = TERR, qc = Math.round((meta.x0 + W * RES / 2 - bounds[0]) / (bounds[2] - bounds[0]) * (w - 1));
+  const rc = Math.round((bounds[3] - (meta.y0 - H * RES / 2)) / (bounds[3] - bounds[1]) * (h - 1));
+  T3.target.y = terrainY(rc * w + qc);
+}
+function updateDrape3D() { // the same layers as the 2D map, as a texture
+  if (!T3) return;
+  const c = T3.drape, g = c.getContext("2d"), V = S.vis, cw = c.width, ch = c.height, b = TERR.bounds, sx = b[2] - b[0], sy = b[3] - b[1];
+  g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = "source-over"; g.globalAlpha = 1;
+  g.fillStyle = "#efeadb"; g.fillRect(0, 0, cw, ch);   // map paper
+  if (V.relief && reliefTint()) { g.imageSmoothingEnabled = true; g.drawImage(reliefTint(), 0, 0, cw, ch); }
+  if (V.basemap && BASEMAP && BASEMAP.naturalWidth) {   // topo lines, roads and water printed on the relief
+    g.globalCompositeOperation = "multiply"; g.drawImage(BASEMAP, 0, 0, cw, ch); g.globalCompositeOperation = "source-over";
+  }
+  const tx = (meta.x0 - b[0]) / sx * cw, ty = (b[3] - meta.y0) / sy * ch, sc = (RES / sx) * cw, img = imgCache[S.pass];
+  if (V.thermal !== 0 && img) { g.imageSmoothingEnabled = true; g.drawImage(img, tx, ty, W * sc, H * sc * (sx / sy) * (ch / cw)); }
+  g.setTransform(sc, 0, 0, sc * (sx / sy) * (ch / cw), tx, ty);
+  const u = 1 / sc, ii = S.pass - 1 - N0;
+  if (V.contours) for (const [mk, major] of elevMasks()) strokeContours(g, mk, 1, `rgba(255,255,255,${major ? 0.6 : 0.3})`, (major ? 1.2 : 0.8) * u, null, true);
+  if (V.plot) strokeContours(g, fuel, 1, "rgba(255,255,255,0.75)", 1.4 * u, [5 * u, 4 * u]);
+  if (ii >= 0 && ii < IV.length) {
+    for (const k of PMODELS.slice().reverse()) if (V["m:" + k] && ready(k, ii)) strokeContours(g, FC[k][ii].pred, 1, MCOL[k], 2 * u);
+    if (V["m:disc"] && ready("disc", ii)) strokeContours(g, FC.disc[ii].pred, 1, MCOL.disc, 2.2 * u);
+  }
+  if (V.real) strokeContours(g, burnt[S.pass], 1, "#ffffff", 2 * u);
+  T3.tex.needsUpdate = true;
+}
+function camera3D() {
+  const {camera, target, theta, phi, dist} = T3;
+  camera.position.set(target.x + dist * Math.sin(phi) * Math.sin(theta), target.y + dist * Math.cos(phi), target.z + dist * Math.sin(phi) * Math.cos(theta));
+  camera.lookAt(target);
+}
+function render3D() { if (!T3 || !V3.on) return; camera3D(); T3.renderer.render(T3.scene, T3.camera); }
+function resize3D() {
+  if (!T3) return;
+  const G = mapGeom(); T3.renderer.setSize(G.cw, G.ch); T3.camera.aspect = G.cw / G.ch; T3.camera.updateProjectionMatrix();
+  $("layers").style.height = window.matchMedia("(min-width: 761px)").matches ? G.ch + "px" : "";
+}
+function reset3D() { Object.assign(T3, {theta: 0.45, phi: 1.0, dist: 520}); T3.target.x = T3.pc[0]; T3.target.z = T3.pc[1]; setHeights3D(); render3D(); }
+function bind3D(el) {
+  let drag = null;
+  el.addEventListener("contextmenu", e => e.preventDefault());
+  el.addEventListener("pointerdown", e => { el.setPointerCapture(e.pointerId); drag = {x: e.clientX, y: e.clientY, pan: e.button === 2 || e.shiftKey}; el.style.cursor = "grabbing"; });
+  el.addEventListener("pointermove", e => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.x = e.clientX; drag.y = e.clientY;
+    if (drag.pan) {
+      const k = T3.dist * 0.0016, st = Math.sin(T3.theta), ct = Math.cos(T3.theta);
+      T3.target.x -= (dx * ct - dy * st) * k; T3.target.z -= (-dx * st - dy * ct) * k;
+    } else { T3.theta -= dx * 0.006; T3.phi = Math.min(Math.max(T3.phi - dy * 0.005, 0.12), 1.48); }
+    render3D();
+  });
+  const end = () => { drag = null; el.style.cursor = "grab"; };
+  el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
+  el.addEventListener("wheel", e => { e.preventDefault(); T3.dist = Math.min(Math.max(T3.dist * Math.exp(e.deltaY * 0.0012), 40), 4000); render3D(); }, {passive: false});
+}
+function set3D(on) {
+  V3.on = on;
+  $("tool3d").classList.toggle("on", on); $("tool3d").setAttribute("aria-pressed", String(on));
+  $("exWrap").hidden = !on; $("map").style.display = on ? "none" : ""; $("map3d").hidden = !on;
+  if (!on) { drawMap(); return; }
+  $("sbCoord").textContent = "Coordinate –"; $("sbZoom").innerHTML = `3D view · height <b>×${V3.ex}</b>`; $("sbScale").textContent = "Scale –";
+  const G = mapGeom(); $("map3d").style.height = G.ch + "px";
+  if (!TERR) { $("msg3d").textContent = "No terrain data for a 3D view."; return; }
+  if (!T3) $("msg3d").textContent = "Loading the 3D engine…";
+  load3D().then(() => {
+    if (!T3) { try { init3D(); } catch (err) { $("msg3d").textContent = "3D needs WebGL, which this browser does not provide."; return; } }
+    $("msg3d").textContent = ""; resize3D(); setHeights3D(); updateDrape3D(); render3D();
+  }).catch(err => { $("msg3d").textContent = err.message; });
+}
+let drapeRaf = 0;
+function refresh3D() { if (!V3.on || !T3 || drapeRaf) return; drapeRaf = requestAnimationFrame(() => { drapeRaf = 0; updateDrape3D(); render3D(); }); }
+
+// ---- map decorations ----
+function haloText(g, txt, x, y, align) {
+  g.textAlign = align || "left"; g.lineWidth = 3; g.strokeStyle = "rgba(255,255,255,0.95)"; g.lineJoin = "round";
+  g.strokeText(txt, x, y); g.fillStyle = "#1a1a1a"; g.fillText(txt, x, y);
+}
+function drawScaleBar(g, G, mpp) { // QGIS-style single-box scale bar: 4 alternating segments, labels 0 / half / full
+  const target = 150 * mpp, pw = Math.pow(10, Math.floor(Math.log10(target)));
+  const nice = [1, 2, 2.5, 5, 10].map(f => f * pw).filter(v => v <= target).pop() || pw;
+  const len = nice / mpp, x = 14, y = G.ch - 16, h = 5, seg = len / 4;
+  const lab = v => (nice >= 1000 ? `${+(v / 1000).toFixed(2)}` : `${+v.toFixed(2)}`);
+  g.save(); g.font = "11px system-ui, sans-serif";
+  g.fillStyle = "rgba(255,255,255,0.9)"; g.fillRect(x - 1.5, y - 1.5, len + 3, h + 3);
+  for (let i = 0; i < 4; i++) { g.fillStyle = i % 2 ? "#ffffff" : "#1a1a1a"; g.fillRect(x + i * seg, y, seg, h); }
+  g.strokeStyle = "#1a1a1a"; g.lineWidth = 1; g.strokeRect(x + 0.5, y + 0.5, len - 1, h - 1);
+  haloText(g, "0", x, y - 4, "center"); haloText(g, lab(nice / 2), x + len / 2, y - 4, "center");
+  haloText(g, `${lab(nice)} ${nice >= 1000 ? "km" : "m"}`, x + len, y - 4, "left");
+  g.restore();
+}
+let NORTH_ROT = null;
+function drawNorthArrow(g, G) { // points to true north: the UTM grid is rotated by the meridian convergence
+  if (NORTH_ROT === null) {
+    const cx = meta.x0 + W / 2 * RES, cy = meta.y0 - H / 2 * RES, [la, lo] = utmInv(cx, cy), [x2, y2] = utmFwd(la + 0.01, lo);
+    NORTH_ROT = Math.atan2(x2 - cx, y2 - cy);   // radians, clockwise from grid north
+  }
+  const x = G.cw - 44, y = 40, s = 15;
+  g.save(); g.translate(x, y); g.rotate(NORTH_ROT);
+  g.lineJoin = "round"; g.lineWidth = 3; g.strokeStyle = "rgba(255,255,255,0.95)";
+  g.beginPath(); g.moveTo(0, -s); g.lineTo(s * 0.55, s); g.lineTo(0, s * 0.45); g.lineTo(-s * 0.55, s); g.closePath(); g.stroke();
+  g.fillStyle = "#1a1a1a"; g.beginPath(); g.moveTo(0, -s); g.lineTo(0, s * 0.45); g.lineTo(-s * 0.55, s); g.closePath(); g.fill();
+  g.fillStyle = "#ffffff"; g.beginPath(); g.moveTo(0, -s); g.lineTo(s * 0.55, s); g.lineTo(0, s * 0.45); g.closePath(); g.fill();
+  g.lineWidth = 1; g.strokeStyle = "#1a1a1a";
+  g.beginPath(); g.moveTo(0, -s); g.lineTo(s * 0.55, s); g.lineTo(0, s * 0.45); g.lineTo(-s * 0.55, s); g.closePath(); g.stroke();
+  g.font = "bold 12px system-ui, sans-serif"; haloText(g, "N", 0, -s - 5, "center");
+  g.restore();
+}
+function drawContourLabels(g, G) { // elevation (m) along each contour, rotated with the line, kept upright, never crowded
+  const placed = [], STEP = 260, GAP = 70;
+  g.save(); g.textBaseline = "middle";
+  for (const [mk, major, z] of elevMasks()) {
+    g.font = `${major ? "bold " : ""}10.5px system-ui, sans-serif`;
+    const txt = z.toFixed(1);
+    for (const ln of contours(mk, true)) {
+      const pts = ln.map(q => [G.x + (q[1] + 0.5) * G.k, G.y + (q[0] + 0.5) * G.k]);
+      const cum = [0]; for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+      const len = cum[cum.length - 1]; if (len < 60) continue;
+      let i = 1;
+      for (let d = Math.min(len / 2, 120); d < len; d += STEP) {
+        while (i < cum.length - 1 && cum[i] < d) i++;
+        const t = (d - cum[i - 1]) / Math.max(cum[i] - cum[i - 1], 1e-9);
+        const x = pts[i - 1][0] + t * (pts[i][0] - pts[i - 1][0]), y = pts[i - 1][1] + t * (pts[i][1] - pts[i - 1][1]);
+        if (x < 24 || y < 12 || x > G.cw - 24 || y > G.ch - 12) continue;
+        if (placed.some(q => Math.hypot(q[0] - x, q[1] - y) < GAP)) continue;
+        const a0 = pts[Math.max(i - 4, 0)], a1 = pts[Math.min(i + 3, pts.length - 1)];
+        let ang = Math.atan2(a1[1] - a0[1], a1[0] - a0[0]);
+        if (ang > Math.PI / 2) ang -= Math.PI; else if (ang < -Math.PI / 2) ang += Math.PI;   // keep text upright
+        placed.push([x, y]);
+        g.save(); g.translate(x, y); g.rotate(ang); haloText(g, txt, 0, 0, "center"); g.restore();
+      }
+    }
+  }
+  g.restore();
+}
+function drawWindArrow(g, G, iv) { // map decoration under the north arrow: the direction the wind blows towards
+  if (NORTH_ROT === null || !iv) return;
+  const x = G.cw - 44, y = 106, L = 36, a = (iv.wd_from + 180) * Math.PI / 180 + NORTH_ROT;   // bearing -> map angle
+  const dx = Math.sin(a), dy = -Math.cos(a), x0 = x - dx * L / 2, y0 = y - dy * L / 2, x1 = x + dx * L / 2, y1 = y + dy * L / 2;
+  const head = (col, w) => {
+    g.strokeStyle = col; g.fillStyle = col; g.lineWidth = w; g.lineCap = "round"; g.lineJoin = "round";
+    g.beginPath(); g.moveTo(x0, y0); g.lineTo(x1 - dx * 6, y1 - dy * 6); g.stroke();
+    g.beginPath(); g.moveTo(x1, y1); g.lineTo(x1 - dx * 10 - dy * 5.5, y1 - dy * 10 + dx * 5.5); g.lineTo(x1 - dx * 10 + dy * 5.5, y1 - dy * 10 - dx * 5.5); g.closePath();
+    if (w > 3) g.stroke(); g.fill();
+  };
+  g.save();
+  head("rgba(255,255,255,0.95)", 5.5);   // halo
+  head("#1f5fa8", 2.4);
+  g.font = "bold 11px system-ui, sans-serif"; haloText(g, `Wind ${Math.round(iv.wd_from)}°`, x, y + L / 2 + 14, "center");
+  g.font = "11px system-ui, sans-serif"; haloText(g, `${iv.U10.toFixed(1)} m/s`, x, y + L / 2 + 27, "center");
+  g.restore();
+}
+const SKY = {CLR: "clear", SKC: "clear", FEW: "few clouds", SCT: "scattered clouds", BKN: "broken clouds", OVC: "overcast", VV: "obscured"};
+function drawWeather(g, G, t) { // weather at the snapshot time, under the wind arrow: the crew's reading and the latest airport report
+  const WX = meta.weather; if (!WX) return;
+  const before = (list) => list.filter(o => o.t <= t).pop() || list[0];
+  const ob = before(WX.obs), on = before(WX.onsite), x = G.cw - 12, f1 = v => (v == null ? "–" : v.toFixed(1)), f0 = v => (v == null ? "–" : Math.round(v));
+  const lines = [
+    [true, `${WX.date} · ${hhmm(t).slice(0, 5)} EST`],
+    [false, `On site ${on.time}: ${f1(on.T)} °C · RH ${f0(on.RH)} %`],
+    [false, `${on.sky} · in-stand wind ${f1(on.ws)} m/s`],
+    [true, `KTLH ${ob.time}`],
+    [false, `${f1(ob.T)} °C · dew point ${f1(ob.Td)} °C · RH ${f0(ob.RH)} %`],
+    [false, `wind ${f0(ob.wd)}° ${f1(ob.ws)} m/s · gust ${ob.gust == null ? "none" : f1(ob.gust) + " m/s"}`],
+    [false, `${SKY[ob.sky] || ob.sky || "–"}${ob.skyl ? ` at ${(ob.skyl / 1000).toFixed(1)} km` : ""} · ${f0(ob.p)} hPa`],
+    [false, `visibility ${f0(ob.vis)} km${ob.wx ? " · " + ob.wx : " · no precipitation"}`],
+  ];
+  if (WX.fwi) lines.push([true, `Fire danger: FFMC ${WX.fwi.FFMC} · BUI ${WX.fwi.BUI}`]);
+  g.save();
+  let y = 182;
+  for (const [bold, txt] of lines) { g.font = `${bold ? "bold " : ""}11px system-ui, sans-serif`; haloText(g, txt, x, y, "right"); y += bold ? 16 : 14.5; }
+  g.restore();
+}
+function dots(g, rows, cols, r, fill, stroke, u) {
+  g.save(); g.fillStyle = fill; if (stroke) { g.strokeStyle = stroke; g.lineWidth = 1 * (u || 0.5); }
+  g.beginPath();
+  for (let i = 0; i < rows.length; i++) { const x = cols[i] + 0.5, y = rows[i] + 0.5; g.moveTo(x + r, y); g.arc(x, y, r, 0, 2 * Math.PI); }
+  g.fill(); if (stroke) g.stroke(); g.restore();
+}
+async function renderMap() {
+  const p = S.pass;
+  drawMap();
+  if ($("inM").width) { renderMoistPanel(); renderTempPanel(); }
+  if (!imgCache[p]) { await lwir(p); if (p !== S.pass) return; drawMap(); }
+  const ii = p - 1 - N0;
+  $("passLabel").textContent = `${p}/${NP - 1}`;
+  renderCompass(ii);
+}
+// interactions: drag to pan, pinch / ctrl-scroll / double-click to zoom, keyboard, buttons, hover readout
+const PTR = new Map(); let DRAG = null, PINCH = null;
+map.addEventListener("pointerdown", e => {
+  map.setPointerCapture(e.pointerId); PTR.set(e.pointerId, {x: e.offsetX, y: e.offsetY});
+  if (PTR.size === 1) DRAG = {x: e.offsetX, y: e.offsetY, cx: VIEW.cx, cy: VIEW.cy, moved: false};
+  if (PTR.size === 2) { const [a, b] = [...PTR.values()]; PINCH = {d: Math.hypot(a.x - b.x, a.y - b.y) || 1, z: VIEW.z}; DRAG = null; }
+});
+map.addEventListener("pointermove", e => {
+  const pt = {x: e.offsetX, y: e.offsetY};
+  if (PTR.has(e.pointerId)) PTR.set(e.pointerId, pt);
+  if (PINCH && PTR.size === 2) {
+    const [a, b] = [...PTR.values()], d = Math.hypot(a.x - b.x, a.y - b.y);
+    zoomAt(PINCH.z * d / PINCH.d / VIEW.z, (a.x + b.x) / 2, (a.y + b.y) / 2); return;
+  }
+  if (DRAG && PTR.size === 1) {
+    const dx = pt.x - DRAG.x, dy = pt.y - DRAG.y;
+    if (Math.abs(dx) + Math.abs(dy) > 3) DRAG.moved = true;
+    if (DRAG.moved && (VIEW.z > 1 || BM_EXT)) { VIEW.cx = DRAG.cx - dx / GEO.k; VIEW.cy = DRAG.cy - dy / GEO.k; clampView(); map.classList.add("dragging"); drawMap(); }
+  }
+  statusCoord(pt.x, pt.y);
+});
+const endPtr = e => { PTR.delete(e.pointerId); if (PTR.size < 2) PINCH = null; if (PTR.size === 0) { DRAG = null; map.classList.remove("dragging"); } };
+map.addEventListener("pointerup", endPtr); map.addEventListener("pointercancel", endPtr);
+map.addEventListener("pointerleave", () => { $("sbCoord").textContent = "Coordinate –"; });
+map.addEventListener("wheel", e => { e.preventDefault(); zoomAt(Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0025)), e.offsetX, e.offsetY); }, {passive: false});
+map.addEventListener("dblclick", e => { e.preventDefault(); zoomAt(e.shiftKey ? 0.5 : 2, e.offsetX, e.offsetY); });
+map.addEventListener("keydown", e => {
+  const G = GEO || mapGeom(), step = 0.15 * G.cw / G.k;
+  const act = {"+": () => zoomAt(1.5, G.cw / 2, G.ch / 2), "=": () => zoomAt(1.5, G.cw / 2, G.ch / 2), "-": () => zoomAt(1 / 1.5, G.cw / 2, G.ch / 2),
+    "0": () => fitView(), ArrowLeft: () => { VIEW.cx -= step; clampView(); drawMap(); },
+    ArrowRight: () => { VIEW.cx += step; clampView(); drawMap(); }, ArrowUp: () => { VIEW.cy -= step; clampView(); drawMap(); },
+    ArrowDown: () => { VIEW.cy += step; clampView(); drawMap(); }}[e.key];
+  if (act) { e.preventDefault(); act(); }
+});
+$("tool3d").onclick = () => set3D(!V3.on);
+$("ex3d").oninput = e => { V3.ex = +e.target.value; $("exVal").textContent = V3.ex; if (T3) { setHeights3D(); render3D(); } $("sbZoom").innerHTML = `3D view · height <b>×${V3.ex}</b>`; };
+$("zoomIn").onclick = () => { if (V3.on && T3) { T3.dist = Math.max(40, T3.dist / 1.4); render3D(); return; } const G = mapGeom(); zoomAt(1.6, G.cw / 2, G.ch / 2); };
+$("zoomOut").onclick = () => { if (V3.on && T3) { T3.dist = Math.min(4000, T3.dist * 1.4); render3D(); return; } const G = mapGeom(); zoomAt(1 / 1.6, G.cw / 2, G.ch / 2); };
+$("zoomFit").onclick = () => { if (V3.on && T3) { reset3D(); return; } fitView(); };
+
+function renderCompass(ii) {
+  const iv = IV[Math.max(0, Math.min(ii, IV.length - 1))];
+  $("sbWind").textContent = `Wind from ${Math.round(iv.wd_from)}° · ${iv.U10.toFixed(1)} m/s at 10 m · midflame ≈ ${(meta.inputs.stats.waf[1] * iv.U20).toFixed(1)} m/s`;
+}
+
+
+const PHYS_NOTE = {
+  physics: "Rothermel per cell (LANDFIRE fuel model, thermal-derived moisture, 20-ft wind reduced by the LANDFIRE canopy, DEM slope; wind and slope added as vectors; Anderson ellipse), propagated with Huygens wavelets as in FARSITE. No tuning.",
+  flammap: "the same per-cell Rothermel ellipses, propagated by minimum travel time on a 16-direction lattice through unburnt fuel (Finney 2002; re-implemented, not the FlamMap software). No tuning.",
+  fbp: "Canadian FBP fuel type C-7 per cell: FFMC from the thermal-derived moisture, open 10 m wind plus the slope-equivalent wind (ST-X-3). No tuning.",
+  persist: "each front point keeps the spread rate observed near it in the previous 30 s (isotropic) — uses no inputs, no fitting.",
+};
+// ---------- equation panel ----------
+function coefStr(v) { const a = Math.abs(v); return a >= 0.1 ? a.toFixed(2) : a >= 0.01 ? a.toFixed(3) : a.toPrecision(2); }
+function renderEquation() {
+  const f = FIT, sp = D.splits[S.k];
+  const lastTrain = N0 + S.k - 1;
+  $("eqPillText").textContent = `Updated at ${fw} ${lastTrain}`;
+  let html = `<span class="lhs">ROS =</span>`;
+  let first = true;
+  TERMS.forEach((t, i) => {
+    if (!f.active[i]) return;
+    const sign = f.beta[i] < 0 ? "−" : (first ? "" : "+");
+    const body = t.key === "1" ? coefStr(f.beta[i]) : `${coefStr(f.beta[i])}·${t.disp}`;
+    html += `<span class="chipt">${sign ? sign + " " : ""}${body}</span>`; first = false;
+  });
+  $("eq").innerHTML = html;
+  const kept = f.active.filter(Boolean).length;
+  $("eqStatus").innerHTML = `<span>Fit R² <b>${fmt(f.r2tr, 2)}</b> train · <b>${fmt(f.r2te, 2)}</b> test</span>` +
+    `<span>Points used <b>${f.ntr.toLocaleString()}</b></span><span>Terms kept <b>${kept}</b> of ${TERMS.length}</span>`;
+  // explanations
+  const inc = f.inclusion;
+  const ex = [];
+  TERMS.forEach((t, i) => {
+    if (!f.active[i]) return;
+    const b = f.beta[i], a = Math.abs(b), faster = b > 0 ? "faster" : "slower";
+    let s;
+    switch (t.key) {
+      case "1": s = `Base rate ${b >= 0 ? "+" : "−"}${a.toFixed(3)} m/s: the part of the spread rate that does not depend on the other terms.`; break;
+      case "cos": s = `Fronts facing straight downwind spread ${a.toFixed(3)} m/s ${faster} than flanks, and backing fronts ${a.toFixed(3)} m/s ${b > 0 ? "slower" : "faster"}.`; break;
+      case "sin": s = `Fronts facing 90° ${b > 0 ? "clockwise" : "anticlockwise"} of the measured wind spread ${a.toFixed(3)} m/s faster than those facing the other way, as if the wind were turned ${b > 0 ? "clockwise" : "anticlockwise"}.`; break;
+      case "cos2": s = `Head and backing fronts both spread ${a.toFixed(3)} m/s ${faster} than flanks (${b > 0 ? "elongated along" : "widened across"} the wind axis).`; break;
+      case "U": s = `Every front spreads ${a.toFixed(3)} m/s ${faster} for each extra 1 m/s of ${LBL.wind}, regardless of direction.`; break;
+      case "Ucos": s = `Head-fire spread is ${a.toFixed(3)} m/s ${faster} with each 1 m/s of wind along the front normal (and backing spread ${b > 0 ? "slower" : "faster"} by the same).`; break;
+      case "I": s = `Each extra 10 kW/m² of ${LBL.I_desc} at the front makes it ${(10 * a).toFixed(3)} m/s ${faster}: intense fronts move ${faster}.`; break;
+      case "Icos": s = `The intensity effect is ${b > 0 ? "stronger" : "weaker"} on head fronts: ${(10 * a).toFixed(3)} m/s per 10 kW/m² × cos θ.`; break;
+      case "k": s = `A front bulging into fuel with a 20 m radius of curvature spreads ${(0.05 * a).toFixed(3)} m/s ${faster} than a straight one (κ = 0.05 1/m).`; break;
+      case "kcos": s = `Curvature matters ${b > 0 ? "more" : "less"} on head fronts: ${(0.05 * a).toFixed(3)} m/s per κ = 0.05 1/m × cos θ.`; break;
+      case "m": s = `Each extra 0.01 of fine-fuel moisture (from the pre-fire thermal image) makes fronts ${(0.01 * a).toFixed(4)} m/s ${faster}.`; break;
+      case "s": s = `Fronts running up a 10 % slope spread ${(0.1 * a).toFixed(4)} m/s ${faster} than on flat ground (and down it ${b > 0 ? "slower" : "faster"}).`; break;
+      case "R0": s = `The rate scales with Rothermel's no-wind, no-slope rate R₀ for the local LANDFIRE fuel model and moisture: ${b >= 0 ? "+" : "−"}${a.toFixed(2)} × R₀.`; break;
+      case "T": s = `Each extra 1 °C of fuel surface temperature before the fire (thermal image) makes fronts ${a.toFixed(4)} m/s ${faster}.`; break;
+      case "P": s = `Fire memory: each 0.01 m/s of spread observed nearby 30–60 s earlier adds ${(0.01 * b).toFixed(4)} m/s now.`; break;
+      case "Rr": s = `${a.toFixed(2)} × Rothermel's own rate at this point and direction (LANDFIRE fuel, thermal and satellite moisture, canopy-reduced wind, slope).`; break;
+      case "Rf": s = `${b >= 0 ? "+" : "−"}${a.toFixed(2)} × the FBP rate at this point and direction (moisture via FFMC, wind, slope, Buildup Index).`; break;
+    }
+    if (t.key === "cos" && iUcos >= 0 && f.active[iUcos]) {
+      const Ur = sp.ref_inputs.U, net = b + f.beta[iUcos] * Ur;
+      s += ` Together with the U·cos θ term, the net head-vs-flank difference at the typical midflame wind (${Ur.toFixed(2)} m/s) is ${net >= 0 ? "+" : "−"}${Math.abs(net).toFixed(3)} m/s.`;
+    }
+    const noise = inc && t.key !== "1" && inc[i] < 0.6;
+    if (noise) s += ` This term may be noise: kept in only ${Math.round(inc[i] * 100)}% of bootstrap refits.`;
+    ex.push(`<li class="${noise ? "noise" : ""}">${s}</li>`);
+  });
+  $("explain").innerHTML = ex.join("");
+  const off = TERMS.filter((t, i) => !f.active[i] && t.key !== "1").map(t => t.disp);
+  $("notKept").innerHTML = sp.all_terms
+    ? `Every input enters through a direction-aware term: Rothermel's and FBP's own rates carry the fuel model, dead (thermal) and live (satellite) moisture, ` +
+      `canopy wind reduction, slope and the Buildup Index; U·cos θ the wind speed; FRFD·cos θ the heat flux; κ·cos θ the front shape. ` +
+      `The input terms are shrunk (ridge ${sp.ridge}, chosen by held-out forecast skill on the training snapshots); the wind-direction terms cos θ and cos² θ are not, ` +
+      `so the head / flank / back pattern follows the data. Separate isotropic terms (moisture, temperature, slope, R₀, memory) were dropped: they raised the backing rate far above what was measured, and slope came out with the wrong sign.`
+    : `Offered but not kept: ${off.join(", ") || "none"}. Simplicity threshold λ = ${sp.lam_cv} chosen by held-out forecast skill on the training snapshots; terms whose sign contradicts fire physics are not allowed.`;
+  // comparison at the measured front points
+  const PS = sp.point_skill, ds = PS.discovered, ph = PS[S.physModel], OB = meta.observed;
+  $("cmpPhysHead").textContent = modelName(S.physModel);
+  // bold = the model value closer to the ground truth (for R², closer to 1)
+  const row = (q, a, b, truth, d) => {
+    const ea = isFinite(a) ? Math.abs(a - truth) : Infinity, eb = isFinite(b) ? Math.abs(b - truth) : Infinity;
+    const cell = (v, win) => `<td class="${win ? "closer" : ""}">${win ? `<b>${fmt(v, d)}</b>` : fmt(v, d)}</td>`;
+    return `<tr><td>${q}</td>${cell(a, ea <= eb)}${cell(b, eb < ea)}<td class="truth">${truth === 1 && d === 2 && q.startsWith("Fit") ? "1" : fmt(truth, d)}</td></tr>`;
+  };
+  $("cmpTable").tBodies[0].innerHTML =
+    row("Head-fire ROS (m/s)", ds.head, ph.head, OB.head, 3) +
+    row("Flank ROS (m/s)", ds.flank, ph.flank, OB.flank, 3) +
+    row("Back ROS (m/s)", ds.back, ph.back, OB.back, 3) +
+    row("Length-to-breadth ratio", ds.lb, ph.lb, OB.lb, 2) +
+    row("Fit to measured ROS, R² (test)", ds.r2_test, ph.r2_test, 1, 2);
+  $("cmpNote").textContent = `Each model's spread rate predicted at the same ${OB.n.toLocaleString()} measured front points (${fw}s ${N0}–${NP - 1}), ` +
+    `as medians by the angle between front normal and wind: head ≤ 30° (${OB.n_head} points), flank 60–120° (${OB.n_flank}), back ≥ 150° (${OB.n_back}); ` +
+    `L/B = (head + back) / (2 × flank). Ground truth = the rates measured in the imagery. R² on the held-out test snapshots. Bold = the model value closer to the ground truth. ` +
+    `${modelName(S.physModel)}: ${PHYS_NOTE[S.physModel] || ""}`;
+}
+
+// ---------- GIS layer panel ----------
+const MCOL = {disc: "#2fe0a6", flammap: "#ff7a3d", physics: "#6aa9ff", fbp: "#e58bff", persist: "#ffd34d", baseline: "#c9c9c9"};
+let ELEV_MASKS = null;
+function elevMasks() {
+  if (ELEV_MASKS) return ELEV_MASKS;
+  const L = LAND; let lo = Infinity, hi = -Infinity; for (let p = 0; p < L.N; p++) { lo = Math.min(lo, L.elev[p]); hi = Math.max(hi, L.elev[p]); }
+  ELEV_MASKS = [];
+  for (let z = Math.ceil(lo * 2) / 2; z < hi; z += 0.5) { const mk = new Uint8Array(L.N); for (let p = 0; p < L.N; p++) mk[p] = L.elev[p] >= z ? 1 : 0; ELEV_MASKS.push([mk, Number.isInteger(z), z]); }
+  return ELEV_MASKS;
+}
+function lwirLegend() {
+  const lo = Math.log10(meta.color.lo), hi = Math.log10(meta.color.hi), stops = [0, 51, 102, 153, 204, 255].map(i => `rgb(${LUT[i].join(",")})`);
+  return `<div class="bar" style="background:linear-gradient(90deg,${stops.join(",")})"></div><div class="tka">` +
+    meta.color.ticks.filter(v => v !== 400).map(v => `<span style="left:${(100 * (Math.log10(v) - lo) / (hi - lo)).toFixed(1)}%">${v}</span>`).join("") + `</div>` +
+    `<div>${meta.color.unit}, log scale · brightness temperature</div>`;
+}
+function setVis(id, on) {
+  S.vis[id] = on ? 1 : 0;
+  const cb = document.querySelector(`#lyrBody input[data-id="${id}"]`); if (cb) cb.checked = !!on;
+  const lg = document.querySelector(`#lyrBody .lyr-lg[data-for="${id}"]`); if (lg) lg.style.display = on ? "" : "none";
+}
+function buildLayerPanel() {
+  const shortName = k => modelName(k).replace(/ \(.*\)/, "");
+  const fire = [
+    {id: "real", name: "Observed perimeter", sw: `<span class="lyr-sw halo" style="border-color:#fff"></span>`, on: 1},
+    {id: "m:disc", name: "Discovered equation", sw: `<span class="lyr-sw" style="border-color:${MCOL.disc}"></span>`, on: 1},
+    ...PMODELS.map(k => ({id: "m:" + k, name: shortName(k), sw: `<span class="lyr-sw" style="border-color:${MCOL[k]}"></span>`, on: k === S.physModel ? 1 : 0})),
+    {id: "front", name: "Front at p−1 (forecast start)", sw: `<span class="lyr-sw dot" style="background:#fff"></span>`, on: 0},
+  ];
+  const mapEl = [
+    {id: "plot", name: "Plot boundary", sw: `<span class="lyr-sw" style="border-top-style:dashed;border-color:currentColor"></span>`, on: 0},
+    {id: "contours", name: "Elevation contours (0.5 m)", sw: `<span class="lyr-sw" style="border-color:currentColor;opacity:.55;border-top-width:1px"></span>`, on: 0},
+    {id: "arrows", name: "Upslope arrows", sw: `<span class="lyr-sw none"></span>`, on: 0},
+    {id: "wind", name: "Wind & weather (KTLH, crew)", sw: `<svg width="14" height="14" viewBox="0 0 14 14" style="flex:none;color:#1f5fa8"><path d="M2 12L11 3M11 3H6M11 3v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, on: 1},
+  ];
+  const base = [
+    {id: "thermal", name: "Drone thermal image", sw: `<span class="lyr-sw ras" style="background:rgb(${LUT[170].join(",")})"></span>`, on: 1, lg: lwirLegend()},
+    ...(TERR ? [{id: "relief", name: "Shaded relief (3DEP, height ×4)", sw: `<span class="lyr-sw ras" style="background:linear-gradient(135deg,#fff,#9a9a92)"></span>`, on: 1}] : []),
+    ...(BASEMAP ? [{id: "basemap", name: "Esri World Topographic Map", sw: `<span class="lyr-sw ras" style="background:#e9efe2"></span>`, on: 1}] : []),
+  ];
+  const row = l => `<label class="lyr-row"><input type="checkbox" data-id="${l.id}" ${l.on ? "checked" : ""}>${l.sw}<span>${l.name}</span></label>` +
+    (l.lg ? `<div class="lyr-lg" data-for="${l.id}" style="${l.on ? "" : "display:none"}">${l.lg}</div>` : "");
+  const group = (name, items) => `<div class="lyr-group"><div class="lyr-gh" role="button" tabindex="0" aria-expanded="true"><span class="caret">▼</span>${name}</div>` +
+    `<div class="lyr-items">${items.map(row).join("")}</div></div>`;
+  $("lyrBody").innerHTML = group("Fire (snapshot p)", fire) + group("Map", mapEl) + group("Base maps", base);
+  $("lyrBody").querySelectorAll(".lyr-gh").forEach(h => {
+    const tgl = () => { const c = h.parentElement.classList.toggle("closed"); h.setAttribute("aria-expanded", String(!c)); };
+    h.onclick = tgl; h.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); tgl(); } };
+  });
+  for (const l of [...fire, ...mapEl, ...base]) S.vis[l.id] = l.on;
+  $("lyrBody").querySelectorAll("input[type=checkbox]").forEach(cb => cb.onchange = () => { setVis(cb.dataset.id, cb.checked); drawMap(); });
+  const box = $("layers"), tg = $("lyrToggle");
+  const setPanel = open => { box.classList.toggle("collapsed", !open); tg.classList.toggle("on", open); tg.setAttribute("aria-pressed", String(open)); };
+  if (window.matchMedia("(max-width: 760px)").matches) setPanel(false);
+  tg.onclick = () => { setPanel(box.classList.contains("collapsed")); drawMap(); };
+  // keep wheel / touch on the panel from panning the map
+  box.addEventListener("wheel", e => e.stopPropagation(), {passive: true});
+}
+
+// ---------- model inputs ----------
+const RAMPS = {
+  moist: ["#f4f8fc", "#c9dcef", "#8fb8de", "#4f8cc4", "#1f5f9e", "#0b3b6e"],
+  terrain: ["#eef2e6", "#d3dfbe", "#b4c48f", "#9a9a62", "#7f6f45", "#5c4a2e"],
+  wind: ["#eef7f4", "#c3e6dc", "#8dcfbd", "#52b19a", "#238c75", "#0c5e4d"],
+};
+const FUELC = {TU1: "#e0b84f", TU2: "#4f8a3c", TL3: "#7a4b2e"};
+function rampAt(r, t) {
+  t = Math.min(Math.max(t, 0), 1) * (r.length - 1); const i = Math.min(Math.floor(t), r.length - 2), f = t - i;
+  const a = parseInt(r[i].slice(1), 16), b = parseInt(r[i + 1].slice(1), 16);
+  return [16, 8, 0].map(sh => Math.round(((a >> sh) & 255) * (1 - f) + ((b >> sh) & 255) * f));
+}
+function inPanel(id, colorAt, smooth, extra) {
+  const canvas = $(id), off = document.createElement("canvas"); off.width = W; off.height = H;
+  const g = off.getContext("2d"), d = g.createImageData(W, H), veil = [236, 235, 230];
+  for (let p = 0; p < W * H; p++) {
+    let c = colorAt(p); if (!fuel[p]) c = c.map((v, i) => Math.round(0.35 * v + 0.65 * veil[i]));
+    d.data[p * 4] = c[0]; d.data[p * 4 + 1] = c[1]; d.data[p * 4 + 2] = c[2]; d.data[p * 4 + 3] = 255;
+  }
+  g.putImageData(d, 0, 0);
+  const dpr = window.devicePixelRatio || 1, cw = canvas.clientWidth || 260, ch = cw * H / W;
+  canvas.width = cw * dpr; canvas.height = ch * dpr; canvas.style.height = ch + "px";
+  const G = canvas.getContext("2d"); G.setTransform(dpr, 0, 0, dpr, 0, 0); G.imageSmoothingEnabled = !!smooth; G.drawImage(off, 0, 0, cw, ch);
+  if (extra) extra(G, cw / W);
+  strokeContours(G, fuel, cw / W, "rgba(20,20,19,0.55)", 1);
+}
+function legendBar(id, ramp, lo, hi, d) {
+  $(id).innerHTML = `<div class="bar" style="background:linear-gradient(90deg,${ramp.join(",")})"></div>` +
+    `<div class="tk"><span>${lo.toFixed(d)}</span><span>${((lo + hi) / 2).toFixed(d)}</span><span>${hi.toFixed(d)}</span></div>`;
+}
+const pctl = (arr, q) => { const v = []; for (let p = 0; p < arr.length; p++) if (fuel[p]) v.push(arr[p]); v.sort((a, b) => a - b); return v[Math.floor(q * (v.length - 1))]; };
+function upslopeArrows(G, sc, u = 1, cIn = "rgba(25,20,15,0.85)", cOut = "rgba(25,20,15,0.3)") { // arrow ∝ slope, pointing upslope, every 8 m
+  const L = LAND, step = Math.max(8, Math.round(8 / RES)), full = 0.08; // tan slope drawn at full length
+  G.save(); G.lineWidth = 1.2 * u;
+  for (let r = Math.floor(step / 2); r < H; r += step) for (let c = Math.floor(step / 2); c < W; c += step) {
+    const p = r * W + c, t = L.tan[p]; if (t < 0.004) continue;
+    G.strokeStyle = G.fillStyle = fuel[p] ? cIn : cOut;
+    const len = Math.min(t / full, 1) * step * 0.85 * sc, a = L.up[p] * Math.PI / 180, dx = Math.sin(a), dy = -Math.cos(a), hmax = 4 * u;
+    const x0 = (c + 0.5) * sc - dx * len / 2, y0 = (r + 0.5) * sc - dy * len / 2, x1 = x0 + dx * len, y1 = y0 + dy * len, h = Math.min(hmax, 0.45 * len);
+    G.beginPath(); G.moveTo(x0, y0); G.lineTo(x1, y1); G.stroke();
+    G.beginPath(); G.moveTo(x1, y1); G.lineTo(x1 - dx * h - dy * h * 0.6, y1 - dy * h + dx * h * 0.6); G.lineTo(x1 - dx * h + dy * h * 0.6, y1 - dy * h - dx * h * 0.6); G.closePath(); G.fill();
+  }
+  G.restore();
+}
+function renderTempPanel() { // surface temperature of the snapshot on the map: flames and burnt ground included, log scale
+  const L = LAND, sm = L.snap(S.pass), T = sm && sm.T ? sm.T : L.tpre;
+  if (!T) { $("inTwrap").style.display = "none"; return; }
+  const lo = meta.color.lo, hi = meta.color.hi, llo = Math.log(lo), lr = Math.log(hi / lo);
+  inPanel("inT", p => LUT[Math.round(255 * Math.min(Math.max((Math.log(Math.max(T[p], lo)) - llo) / lr, 0), 1))], true);
+  const stops = [0, 51, 102, 153, 204, 255].map(i => `rgb(${LUT[i].join(",")})`), ticks = [20, 50, 100, 200, 600];
+  let tmax = 0; for (let p = 0; p < L.N; p++) if (fuel[p] && T[p] > tmax) tmax = T[p];
+  $("lgT").innerHTML = `<div class="bar log" style="background:linear-gradient(90deg,${stops.join(",")})"></div><div class="tka">` +
+    ticks.map(v => `<span style="left:${(100 * Math.log(v / lo) / lr).toFixed(1)}%">${v}</span>`).join("") + `</div>` +
+    `<div>°C, log scale · hottest now ${Math.round(tmax)} °C (the camera saturates near 605 °C)</div>`;
+  $("inTsub").textContent = sm && sm.T ? `°C · snapshot ${S.pass} (${hhmm(meta.t_utc[S.pass])}): flames = peak, fuel = mean of its 30 s of frames`
+                                        : "°C · drone LWIR, frames before the fire arrived";
+}
+let MOIST_RANGE = null;
+function renderMoistPanel() { // fine dead fuel moisture of the snapshot on the map (grey = burnt)
+  const L = LAND, sm = L.snap(S.pass), m = sm ? sm.m1 : L.m1, b = burnt[S.pass];
+  if (!MOIST_RANGE) {
+    const v = []; for (let p = 0; p < L.N; p++) if (fuel[p]) v.push(L.m1[p]);
+    if (sm) for (let k = N0; k < NP; k += 3) { const mk = L.snap(k).m1, bk = burnt[k]; for (let p = 0; p < L.N; p += 7) if (fuel[p] && !bk[p]) v.push(mk[p]); }
+    v.sort((a, c) => a - c); MOIST_RANGE = [v[Math.floor(0.02 * (v.length - 1))], v[Math.floor(0.98 * (v.length - 1))]];
+  }
+  const [lo, hi] = MOIST_RANGE, grey = [178, 176, 168];
+  inPanel("inM", p => (sm && b[p] && fuel[p] ? grey : rampAt(RAMPS.moist, (m[p] - lo) / (hi - lo))), true);
+  legendBar("lgM", RAMPS.moist, lo, hi, 3);
+  const t = meta.t_utc[S.pass];
+  $("inMsub").textContent = sm ? `fraction · snapshot ${S.pass} (${hhmm(t)}), from its thermal frames · grey = burnt` : "fraction · from the temperature and the air humidity";
+}
+function renderInputs() {
+  const L = LAND, U20 = IV[0].U20, I = meta.inputs;
+  renderTempPanel();
+  renderMoistPanel();
+  let zlo = Infinity, zhi = -Infinity; for (let p = 0; p < L.N; p++) { zlo = Math.min(zlo, L.elev[p]); zhi = Math.max(zhi, L.elev[p]); }
+  inPanel("inZ", p => rampAt(RAMPS.terrain, (L.elev[p] - zlo) / (zhi - zlo)), true, (G, sc) => {
+    for (let z = Math.ceil(zlo * 2) / 2; z < zhi; z += 0.5) {
+      const mk = new Uint8Array(L.N); for (let p = 0; p < L.N; p++) mk[p] = L.elev[p] >= z ? 1 : 0;
+      strokeContours(G, mk, sc, Number.isInteger(z) ? "rgba(40,30,20,0.45)" : "rgba(40,30,20,0.2)", Number.isInteger(z) ? 1 : 0.7, null, true);
+    }
+    upslopeArrows(G, sc);
+  });
+  legendBar("lgZ", RAMPS.terrain, zlo, zhi, 1);
+  $("lgZ").insertAdjacentHTML("beforeend", `<div>elevation, m · slope ${I.stats.slope_pct[0].toFixed(1)}–${I.stats.slope_pct[2].toFixed(1)} % (p5–p95)</div>`);
+  const hex = h => [1, 3, 5].map(i => parseInt(h.substr(i, 2), 16));
+  inPanel("inF", p => hex(FUELC[L.fuelNames[L.fuel[p]]] || "#999999"), false);
+  $("lgF").innerHTML = L.fuelNames.map(n => `<span class="cat"><i style="background:${FUELC[n] || "#999"}"></i>${n} ${Math.round(100 * (I.fuel_share[n] || 0))} %</span>`).join("");
+  const ulo = pctl(L.waf, 0.0) * U20, uhi = pctl(L.waf, 1.0) * U20;
+  inPanel("inU", p => rampAt(RAMPS.wind, (L.waf[p] * U20 - ulo) / Math.max(uhi - ulo, 1e-9)), false);
+  legendBar("lgU", RAMPS.wind, ulo, uhi, 2);
+  $("inSub").textContent = `same for every model · wind ${I.U10.toFixed(1)} m/s at 10 m from ${Math.round(I.wd_from)}° (20-ft ${I.U20.toFixed(1)} m/s) · air ${I.T_air.toFixed(1)} °C, RH ${Math.round(I.RH_air)} %` +
+    (meta.moisture ? ` · live fuel moisture herb ${meta.moisture.live.herb.toFixed(2)}, woody ${meta.moisture.live.wood.toFixed(2)}` : "");
+  if (L.ndii) {
+    const nlo = pctl(L.ndii, 0.0), nhi = Math.max(pctl(L.ndii, 1.0), nlo + 0.01);
+    inPanel("inL", p => rampAt(RAMPS.moist, (L.ndii[p] - nlo) / (nhi - nlo)), false);
+    legendBar("lgL", RAMPS.moist, nlo, nhi, 3);
+    const lv = meta.moisture.live;
+    $("inLsub").textContent = `Sentinel-2 NDII, ${lv.s2_ndii.date} · plot → herb ${lv.herb.toFixed(2)}, woody ${lv.wood.toFixed(2)}`;
+  } else $("inLwrap").style.display = "none";
+  renderMoisture();
+  renderUseTable();
+}
+function renderMoisture() {
+  const M = meta.moisture; if (!M) { $("moistBlock").style.display = "none"; return; }
+  const ck = M.checks, f2 = v => (v == null || !isFinite(v) ? "–" : v.toFixed(2)), f3 = v => (v == null || !isFinite(v) ? "–" : v.toFixed(3));
+  const eqOk = Math.abs(ck.thermal_median - ck.emc_air) <= 0.02, repOk = ck.repeat_r_5m >= 0.5;
+  const C = [
+    ["Level vs equilibrium with the air", `thermal median ${f3(ck.thermal_median)} (p5–p95 ${f3(ck.thermal_p5)}–${f3(ck.thermal_p95)}) vs Simard EMC at the crew's 84 °F / 52 % = ${f3(ck.emc_air)}`, eqOk ? "✓ consistent" : "✗ differs"],
+    ["Repeatable", `maps from two separate pre-fire windows (${ck.repeat_windows.map(v => v.toFixed(1)).join(" and ")} min): r = ${f2(ck.repeat_r_px)} per 0.5 m pixel, ${f2(ck.repeat_r_5m)} at 5 m`, repOk ? "✓ real pattern" : "✗ noisy"],
+  ];
+  $("checkTable").tHead.innerHTML = `<tr><th>Check</th><th>Result</th><th></th></tr>`;
+  $("checkTable").tBodies[0].innerHTML = C.map(([a, b, v]) => `<tr><td>${a}</td><td>${b}</td><td class="${v.startsWith("✓") ? "ok" : "warn"}">${v}</td></tr>`).join("");
+}
+// Which model uses what.  Discovered column: the terms the fitted equation keeps for each input, with their
+// coefficients, directly or via Rothermel's / FBP's rates (R_Roth, R_FBP).
+const USE = [
+  ["Fine dead fuel moisture", "each snapshot's LWIR + on-site air T, RH", {via: ["Rr", "Rf"], note: "inside Rothermel (moisture damping) and FBP (FFMC); its own M term was dropped"}, "✓ moisture damping", "✓", "✓ via FFMC", "—"],
+  ["Fuel surface temperature", "pre-fire LWIR", {via: ["Rr", "Rf"], note: "through the fuel moisture it sets; its own T term was dropped"}, "via moisture", "via moisture", "via FFMC", "—"],
+  ["Live fuel moisture", meta.moisture ? `Sentinel-2 NDII: herb ${meta.moisture.live.herb.toFixed(2)}, woody ${meta.moisture.live.wood.toFixed(2)}` : "assumed: herb 0.60, woody 0.90", {via: ["Rr"], note: "inside Rothermel"}, "✓", "✓", "—", "—"],
+  ["Fuel model", "LANDFIRE 2022 FBFM40", {via: ["Rr"], note: "TU1 / TU2 / TL3 inside Rothermel"}, "✓ TU1 / TU2 / TL3", "✓ TU1 / TU2 / TL3", "C-7 (fixed type)", "—"],
+  ["Canopy cover, height, base height", "LANDFIRE 2022", {direct: ["Ucos"], via: ["Rr"], note: "midflame wind = 20-ft wind × canopy reduction"}, "✓ wind reduction", "✓ wind reduction", "— (open 10 m wind)", "—"],
+  ["Wind speed and direction", "KTLH METAR, 10 m", {direct: ["cos", "cos2", "Ucos"], via: ["Rr", "Rf"], note: "direction θ and midflame speed U"}, "✓ 20-ft", "✓ 20-ft", "✓ 10 m", "—"],
+  ["Slope and aspect", "USGS 3DEP 1 m lidar DEM", {via: ["Rr", "Rf"], note: "inside Rothermel and FBP; its own S term was dropped (wrong sign: it overlaps the wind here)"}, "✓ slope vector", "✓ slope vector", "✓ slope-equivalent wind", "—"],
+  ["Drought (Buildup Index)", meta.fbp.bui ? `KTLH weather since Sep 2022: BUI ${meta.fbp.bui.toFixed(0)}` : "not available", {via: ["Rf"], note: "inside FBP"}, "—", "—", meta.fbp.bui ? "✓ BUI effect" : "—", "—"],
+  ["Heat flux (radiant flux) and front curvature", "LWIR at the front", {direct: ["Icos", "kcos"], note: "weighted towards the head (× cos θ)"}, "—", "—", "—", "—"],
+  ["Recent local spread rate", "LWIR, previous 30 s", {note: "dropped: too noisy at 0.5 m and 30 s"}, "—", "—", "—", "✓"],
+];
+function renderUseTable() {
+  const t = $("useTable"), keyIdx = Object.fromEntries(TERMS.map((x, i) => [x.key, i]));
+  const term = k => { const i = keyIdx[k]; if (i == null || !FIT || !FIT.active[i]) return null; const b = FIT.beta[i];
+    return `${b < 0 ? "−" : "+"}${coefStr(b)}·${TERMS[i].disp}`; };
+  t.tHead.innerHTML = `<tr><th>Input</th><th>Source</th><th>Discovered equation (kept terms)</th><th>FlamMap MTT</th><th>Rothermel + Huygens</th><th>FBP C-7</th><th>Persistence</th></tr>`;
+  t.tBodies[0].innerHTML = USE.map(([inp, src, d, fm, ph, fb, pe]) => {
+    const direct = (d.direct || []).map(term).filter(Boolean), via = (d.via || []).map(term).filter(Boolean);
+    const note = d.note ? `<div class="use-note">${d.note}</div>` : "";
+    const dc = !direct.length && !via.length ? `<td class="off">—${note}</td>`
+      : `<td class="kept">✓ ${direct.join(", ")}${via.length ? `${direct.length ? "; " : ""}via ${via.join(", ")}` : ""}${note}</td>`;
+    const c = v => `<td class="${v.startsWith("—") ? "off" : ""}">${v}</td>`;
+    return `<tr><td>${inp}</td><td class="muted">${src}</td>${dc}${c(fm)}${c(ph)}${c(fb)}${c(pe)}</tr>`;
+  }).join("");
+}
+
+// ---------- forecast test ----------
+function panel(canvas, ii, which) {
+  const iv = IV[ii], old = burnt[iv.i], act = burnt[iv.i + 1];
+  const pred = which === "actual" ? act : ready(which, ii) ? FC[which][ii].pred : old;
+  const col = which === "actual" ? css("--panel-new") : which === "disc" ? css("--disc") : css("--phys");
+  const hex = h => { const m = h.replace("#", ""); return [0, 2, 4].map(o => parseInt(m.substr(o, 2), 16)); };
+  const cOut = hex(css("--panel-out")), cFuel = hex(css("--panel-fuel")), cOld = hex(css("--panel-old")), cNew = hex(col);
+  const off = document.createElement("canvas"); off.width = W; off.height = H;
+  const g = off.getContext("2d"), d = g.createImageData(W, H);
+  for (let p = 0; p < W * H; p++) {
+    const c = !fuel[p] ? cOut : old[p] ? cOld : pred[p] ? cNew : cFuel;
+    d.data[p * 4] = c[0]; d.data[p * 4 + 1] = c[1]; d.data[p * 4 + 2] = c[2]; d.data[p * 4 + 3] = 255;
+  }
+  g.putImageData(d, 0, 0);
+  const dpr = window.devicePixelRatio || 1, cw = canvas.clientWidth || 300, ch = cw * H / W;
+  canvas.width = cw * dpr; canvas.height = ch * dpr; canvas.style.height = ch + "px";
+  const G = canvas.getContext("2d"); G.setTransform(dpr, 0, 0, dpr, 0, 0); G.imageSmoothingEnabled = false; G.drawImage(off, 0, 0, cw, ch);
+  if (which !== "actual") strokeContours(G, act, cw / W, css("--ink"), 1.1);
+}
+function testMeans(model) {
+  const sp = D.splits[S.k], out = {};
+  for (const k of ["iou", "iou_new", "front_mean_m", "front_p90_m", "arrival_err_s"]) {
+    const v = sp.test.map(i => FC[model][i - N0].m[k]).filter(x => isFinite(x));
+    out[k] = v.length ? v.reduce((a, b) => a + b, 0) / v.length : NaN;
+  }
+  return out;
+}
+function renderForecast() {
+  const sp = D.splits[S.k];
+  let ii = S.pass - 1 - N0;
+  if (ii < 0 || ii >= IV.length) ii = sp.test[0] - N0;
+  const iv = IV[ii], isTest = sp.test.includes(iv.i);
+  $("fcTitle").textContent = `Forecast test · ${fw} ${iv.i} → ${iv.i + 1}`;
+  $("fcSub").textContent = `${isTest ? "held-out TEST interval" : "training interval (in-sample)"} · Δt ${Math.round(iv.dt)} s · wind ${iv.U10.toFixed(1)} m/s (10 m) from ${Math.round(iv.wd_from)}°`;
+  panel($("pActual"), ii, "actual"); panel($("pPhys"), ii, S.physModel); panel($("pDisc"), ii, "disc");
+  $("physName").textContent = modelName(S.physModel);
+  const ha = a => { let n = 0; for (let p = 0; p < a.length; p++) n += a[p] && fuel[p] && !burnt[iv.i][p]; return (n * RES * RES / 1e4).toFixed(2); };
+  $("capActual").textContent = `+${ha(burnt[iv.i + 1])} ha new`;
+  const cap = m => (ready(m, ii) ? `IoU new ${fmt(FC[m][ii].m.iou_new, 2)} · ${fmt(FC[m][ii].m.front_mean_m, 1)} m` : "computing…");
+  $("capPhys").textContent = cap(S.physModel);
+  $("capDisc").textContent = cap("disc");
+  renderModelTable();
+}
+function renderModelTable() {
+  const tb = $("modelTable").tBodies[0], sp = D.splits[S.k];
+  if (!ALLM.every(allReady)) { tb.innerHTML = `<tr><td colspan="5" class="muted">computing…</td></tr>`; return; }
+  const rows = ALLM.map(k => ({k, m: testMeans(k)}));
+  const best = (key, dir) => { const v = rows.map(r => r.m[key]).filter(isFinite); return dir > 0 ? Math.max(...v) : Math.min(...v); };
+  const B = {iou_new: best("iou_new", 1), front_mean_m: best("front_mean_m", -1), front_p90_m: best("front_p90_m", -1), arrival_err_s: best("arrival_err_s", -1)};
+  const cell = (r, key, d, u) => `<td class="${Math.abs(r.m[key] - B[key]) < 1e-9 ? "best" : ""}">${fmt(r.m[key], d)}${u}</td>`;
+  const sw = k => MCOL[k] || css("--base");
+  tb.innerHTML = rows.map(r => `<tr data-k="${r.k}" class="${r.k === S.physModel ? "sel" : ""}"><td><span class="sw" style="background:${sw(r.k)}"></span>${modelName(r.k)}</td>` +
+    cell(r, "iou_new", 2, "") + cell(r, "front_mean_m", 1, " m") + cell(r, "front_p90_m", 1, " m") + cell(r, "arrival_err_s", 0, " s") + `</tr>`).join("");
+  tb.querySelectorAll("tr").forEach(tr => tr.onclick = () => { if (PMODELS.includes(tr.dataset.k)) setModel(tr.dataset.k); });
+  $("modelTableNote").textContent = `Mean over the ${sp.test.length} held-out test forecasts of this split (${fw} ${sp.test[0]}→${sp.test[0] + 1} … ` +
+    `${sp.test[sp.test.length - 1]}→${sp.test[sp.test.length - 1] + 1}); bold = best. Every model gets the same inputs (above). Click a model's row to compare it with the discovered equation here, in the table above and on the map.`;
+}
+
+// ---------- controls ----------
+function renderAll() { renderMap(); renderInputs(); renderEquation(); renderForecast(); }
+const ps = $("passSlider"); ps.min = N0; ps.max = NP - 1; ps.value = S.pass;
+{ // one label per snapshot on wide screens; narrow screens keep the first, the last and every 5th
+  const last = NP - 1, span = Math.max(1, last - N0), lab = [];
+  for (let p = N0; p <= last; p++) {
+    const major = p === N0 || p === last || (p % 5 === 0 && p - N0 >= 4 && last - p >= 4);
+    lab.push(`<span class="${major ? "" : "minor"}" style="left:calc(8px + (100% - 16px) * ${((p - N0) / span).toFixed(4)})">${p}</span>`);
+  }
+  $("passTicks").innerHTML = lab.join("");
+}
+ps.oninput = () => { S.pass = +ps.value; renderMap(); renderForecast(); };
+const ICON_PLAY = `<svg viewBox="0 0 16 16"><path class="fill" d="M4.5 2.5v11l9-5.5z"/></svg>`, ICON_PAUSE = `<svg viewBox="0 0 16 16"><path class="fill" d="M4 2.5h3v11H4zM9 2.5h3v11H9z"/></svg>`;
+const setPlay = on => { $("play").innerHTML = on ? ICON_PAUSE : ICON_PLAY; $("play").setAttribute("aria-label", on ? "Pause" : "Play"); $("play").classList.toggle("on", on); };
+const stepTo = p => { S.pass = Math.min(Math.max(p, N0), NP - 1); ps.value = S.pass; renderMap(); renderForecast(); };
+$("prevSnap").onclick = () => stepTo(S.pass - 1);
+$("nextSnap").onclick = () => stepTo(S.pass + 1);
+$("play").onclick = () => {
+  if (S.timer) { clearInterval(S.timer); S.timer = null; setPlay(false); return; }
+  if (S.pass >= NP - 1) S.pass = N0;
+  setPlay(true);
+  S.timer = setInterval(() => { S.pass++; ps.value = S.pass; renderMap(); renderForecast(); if (S.pass >= NP - 1) { clearInterval(S.timer); S.timer = null; setPlay(false); } }, Math.max(500, Math.round(22000 / (NP - N0))));
+};
+
+// the physics model shown in the forecast panels and the equation table: click its row in the model table
+function setModel(k) { S.physModel = k; setVis("m:" + k, 1); drawMap(); renderMap(); renderEquation(); renderForecast(); }
+window.addEventListener("resize", () => { clearTimeout(window.__rz); window.__rz = setTimeout(renderAll, 120); });
+
+
+// ---------- boot ----------
+ALLM.forEach(k => { FC[k] = IV.map(() => undefined); });
+$("sbCrs").textContent = meta.crs === "EPSG:26916" ? "EPSG:26916 · NAD83 / UTM zone 16N" : meta.crs;
+
+computeFit(); buildLayerPanel(); renderAll(); schedule(ALLM.slice()); scheduleBootstrap();
+for (let p = N0; p < NP; p++) lwir(p);
+window.__DEMO = {S, FC, FIT: () => FIT, CORE};
+})();
+</script>
+</body>
+</html>

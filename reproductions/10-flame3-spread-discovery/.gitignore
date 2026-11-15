@@ -1,0 +1,8 @@
+# downloaded and intermediate data (~430 MB) and the built page: rebuilt by `python run_all.py`
+data/raw/
+data/interim/
+data/qa/
+web/
+__pycache__/
+*.pyc
+.DS_Store
